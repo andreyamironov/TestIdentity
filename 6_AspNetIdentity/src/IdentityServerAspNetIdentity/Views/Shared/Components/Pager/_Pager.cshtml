@@ -1,0 +1,56 @@
+﻿@model IdentityServerAspNetIdentity.ViewModels.PagerModel
+<nav>
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link"
+               asp-route-page=@Model.PageDown
+               asp-route-count=@Model.ItemsPerPage
+               asp-route-search=@Model.Search
+               asp-route-tag=@Model.Tag><<</a>
+        </li>
+
+        @for (int i = Model.RangeStart; i <= Model.RangeStop; i++)
+        {
+            if (i != Model.Page)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                       asp-route-page=@i
+                       asp-route-count=@Model.ItemsPerPage
+                       asp-route-search=@Model.Search
+                       asp-route-tag=@Model.Tag>@i</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item active">
+                    <a class="page-link"
+                       asp-route-page=@i
+                       asp-route-count=@Model.ItemsPerPage
+                       asp-route-search=@Model.Search
+                       asp-route-tag=@Model.Tag>@i</a>
+                </li>
+            }
+        }
+
+        <li class="page-item">
+            <a class="page-link"
+               asp-route-page=@Model.PageUp
+               asp-route-count=@Model.ItemsPerPage
+               asp-route-search=@Model.Search
+               asp-route-tag=@Model.Tag>>></a>
+        </li>
+        <li class="page-item">&nbsp</li>
+        @for (int i = 0; i < Model.ItemsPerPageVariant.Length; i++)
+        {
+            <li class="page-item">
+                <a class="page-link"
+                   asp-route-page=@Model.Page
+                   asp-route-count=@Model.ItemsPerPageVariant[i]
+                   asp-route-search=@Model.Search
+                   asp-route-tag=@Model.Tag>@Model.ItemsPerPageVariant[i]                                    
+                </a>
+            </li>
+        }
+    </ul>
+</nav>

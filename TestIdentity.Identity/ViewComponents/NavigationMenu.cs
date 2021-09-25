@@ -1,0 +1,27 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using TestIdentity.Identity.Models;
+using TestIdentity.Identity.ViewModels;
+
+namespace TestIdentity.Identity.ViewComponents
+{
+    public class NavigationMenu:ViewComponent
+    {
+        public IViewComponentResult Invoke()
+        {
+            List<MenuItem> model = new List<MenuItem>();
+
+            if (User.Identity.IsAuthenticated && User.IsInRole(Enum.GetName(typeof(Core.RoleRight), Core.RoleRight.Administrator)))
+            {
+                model.Add(new MenuItem() { Controller = "Users", Action = "Index", Header = "Users" });
+                model.Add(new MenuItem() { Controller = "Clients", Action = "Index", Header = "Clients" });
+                model.Add(new MenuItem() { Controller = "LogEvents", Action = "Index", Header = "Journal" }); 
+            }
+
+            return View("_NavigationMenu", model);
+        }
+    }
+}

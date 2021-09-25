@@ -1,0 +1,41 @@
+﻿@model TestIdentity.Identity.ViewModels.ClientScopeCreateViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create scope for client '@Model.ClientName'</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input asp-for="ReturnUrl_VmProperty" class="form-control" hidden="hidden" />
+            </div>
+            <div class="form-group">
+                <input asp-for="ClientId" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input asp-for="ClientName" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Scope" class="control-label"></label>
+                <input asp-for="Scope" class="form-control" />
+                <span asp-validation-for="Scope" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,35 @@
+﻿@model TestIdentity.Identity.ViewModels.AccountDetailsViewModel
+
+<h1>Manage</h1>
+<hr />
+<h3 class="label label-primary">@Model.UserName</h3>
+
+<br />
+
+<div>
+    <table class="table-sm table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    Claim Type
+                </th>
+                <th>
+                    Claim Value
+                </th>               
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Claims)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Key)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Value)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

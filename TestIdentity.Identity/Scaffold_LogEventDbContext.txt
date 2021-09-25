@@ -1,0 +1,1 @@
+﻿> Scaffold-DbContext 'Server=' Microsoft.EntityFrameworkCore.SqlServer -Tables LogIvents -Context ApplicationEventContext -ContextDir Data -OutputDir Models

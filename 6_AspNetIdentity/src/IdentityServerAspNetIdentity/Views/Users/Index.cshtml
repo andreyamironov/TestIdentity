@@ -1,0 +1,114 @@
+﻿@model UsersViewModel
+
+@{
+    ViewData["Title"] = "View";
+}
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="navbar-brand">@Model.ControllerName</div>
+        <a class="btn btn-outline-secondary my-2 my-sm-0 mr-sm-2"
+           asp-action="Create"
+           asp-route-returnUrl="@Model.QueryString">Create New</a>
+        <form class="form-inline mt-2 mt-md-0" method="get"
+              asp-controller=@Model.ControllerName
+              asp-route-page=@Model.Page
+              asp-route-count=@Model.ItemsPerPage>
+            <input class="form-control mr-sm-2" type="text" placeholder="Поиск" aria-label="Search" name="search" value=@Model.Search>
+            <button class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit">Искать</button>
+        </form>
+        <a class="btn btn-outline-secondary my-2 my-sm-0 mr-sm-2"
+           asp-controller="users"
+           asp-route-page=@Model.Page
+           asp-route-count=@Model.ItemsPerPage>X</a>
+    </nav>
+    <div>
+        <label class="bg-warning">@TempData.GetStringOrEmpty(IdentityServerAspNetIdentity.Core.KeyWord.KEY_TEMPDATA_INFO)</label>
+    </div>
+
+    <table class="table-sm table-bordered">
+        <thead>
+            <tr>
+                <th></th>
+                <th>
+                    Id
+                </th>
+                <th>
+                    UserName
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    PhoneNumber
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"></button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" type="button" asp-action="Details" asp-route-id="@item?.Id" asp-route-returnUrl="@Model.QueryString">
+                                        View
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" type="button" asp-action="Edit" asp-route-id="@item?.Id" asp-route-returnurl="@Model.QueryString">
+                                        Edit
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" type="button" asp-action="Delete" asp-route-id="@item?.Id" asp-route-returnUrl="@Model.QueryString">
+                                        Delete
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" type="button" asp-controller="Claims" asp-action="Index" asp-route-id="@item?.Id">
+                                        Claims View
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" type="button" asp-controller="Claims" asp-action="Create" asp-route-id="@item?.Id" asp-route-returnurl="@Model.QueryString">
+                                        Add Claim
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @await Component.InvokeAsync(nameof(IdentityServerAspNetIdentity.ViewComponents.Pager)
+      , new
+      {
+          Model.ControllerName
+      ,
+          page = Model.Page
+      ,
+          itemsperpage = Model.ItemsPerPage
+      ,
+          totalCount = Model.TotalCount
+      ,
+          search = Model.Search
+      ,
+          tag = Model.Tag
+      })
+</div>
+

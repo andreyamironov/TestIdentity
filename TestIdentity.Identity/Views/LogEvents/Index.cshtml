@@ -1,0 +1,80 @@
+﻿@model LogEventsViewModel
+
+@{
+    ViewData["Title"] = "Log Events";
+}
+
+@*<div class="container-fluid">*@
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="navbar-brand">@Model.ControllerName</div>
+        <form class="form-inline mt-2 mt-md-0" method="get"
+              asp-controller=@Model.ControllerName
+              asp-route-page=@Model.Page
+              asp-route-count=@Model.ItemsPerPage>
+            <input class="form-control mr-sm-2" type="text" placeholder="Поиск" aria-label="Search" name="search" value=@Model.Search>
+            <button class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit">Искать</button>
+        </form>
+        <a class="btn btn-outline-secondary my-2 my-sm-0 mr-sm-2"
+           asp-controller=@Model.ControllerName
+           asp-route-page=@Model.Page
+           asp-route-count=@Model.ItemsPerPage>X</a>
+    </nav>
+<p></p>
+
+
+
+        <table class="table-sm table-bordered w-100">
+            <thead>
+                <tr>
+                    <th>
+                        Time
+                    </th>
+                    <th>
+                        Level
+                    </th>
+                    <th>
+                        Message
+                    </th>
+                    <th>
+                        Exception
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TimeStamp)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Level)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Message)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Exception)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    @await Component.InvokeAsync(nameof(TestIdentity.Identity.ViewComponents.Pager)
+        , new
+        {
+            Model.ControllerName
+        ,
+            page = Model.Page
+        ,
+            itemsperpage = Model.ItemsPerPage
+        ,
+            totalCount = Model.TotalCount
+        ,
+            search = Model.Search
+        ,
+            tag = Model.Tag
+        })
+
+@*</div>*@

@@ -1,0 +1,18 @@
+﻿@model IdentityServerAspNetIdentity.ViewModels.DropDownActionModel
+<div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"></button>
+    <ul class="dropdown-menu">
+        @foreach (var item in Model?.Items)
+        {
+            <li>
+                <a class="dropdown-item" type="button"
+                   asp-controller=@item.Controller
+                   asp-action=@item.Action
+                   asp-all-route-data=@item.RouteData
+                   asp-route-returnurl=@item.ReturnUrl>
+                    @item.Header
+                </a>
+            </li>
+        }
+    </ul>
+</div>
