@@ -20,7 +20,6 @@ namespace IdentityServerAspNetIdentity.Controllers
 {
     [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     [Authorize(Roles = "Administrator")]
-
     public class ClientsController : AppBaseController
     {
         IMediator _mediator;

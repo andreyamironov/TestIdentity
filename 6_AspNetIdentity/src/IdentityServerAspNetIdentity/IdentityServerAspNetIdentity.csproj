@@ -34,4 +34,8 @@
     <ProjectReference Include="..\..\..\AMir.Interface\AMir.Interface.csproj" />
     <ProjectReference Include="..\..\..\AMir.Wrapper\AMir.Wrapper.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Repository\IdentityResources\" />
+  </ItemGroup>
 </Project>
