@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace IdentityServerAspNetIdentity.Queries.ApiScopes
 {
-    public record GetApiScopesPagerListQuery(IdentityServerAspNetIdentity.Core.HttpParams HttpParams) : IRequest<PagerListModel<ApiScopesViewModel>>;
+    public record GetApiScopesPagerListQuery(IdentityServerAspNetIdentity.Core.HttpParams HttpParams) : IRequest<PagerListModel<ApiScopeViewModel>>;
 }

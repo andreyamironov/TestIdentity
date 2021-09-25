@@ -1,14 +1,20 @@
-﻿using System;
+﻿using IdentityServerAspNetIdentity.Core;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace IdentityServerAspNetIdentity.ViewModels
 {
-    public class ApiScopesViewModel: IdentityServer4.Models.ApiScope
+    public class ApiScopesViewModel : PagerListModel<ApiScopeViewModel>
     {
-        [ReadOnly(true)]
-        public int Id { get; set; }
+        public ApiScopesViewModel()
+        {
+            base.ControllerName = "ApiScopes";
+        }
+        public ApiScopesViewModel(HttpParams httpParams, int total, IEnumerable<ApiScopeViewModel> items) : base(httpParams, total, items)
+        {
+            base.ControllerName = "ApiScopes";
+        }
     }
 }

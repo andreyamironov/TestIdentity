@@ -1,4 +1,7 @@
-﻿using MediatR;
+﻿using AMir.Wrapper;
+using IdentityServerAspNetIdentity.Core;
+using IdentityServerAspNetIdentity.Queries.ApiScopes;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -20,9 +23,21 @@ namespace IdentityServerAspNetIdentity.Controllers
             _mediator = mediator;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string search = null)
         {
-            return View();
+
+            //var tmpId = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ORIGINAL_ID, true);
+            var tempDataReturnUrl = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_RETURN_URL);
+
+            IdentityServerAspNetIdentity.Core.HttpParams httpParams;
+            if (!string.IsNullOrWhiteSpace(tempDataReturnUrl))
+                httpParams = IdentityServerAspNetIdentity.Core.HttpParams.Get(tempDataReturnUrl);
+            else
+                httpParams = IdentityServerAspNetIdentity.Core.HttpParams.Get(HttpContext.Request.QueryString.Value);
+
+            var model = await _mediator.Send(new GetApiScopesPagerListQuery(httpParams));
+
+            return View(model);
         }
     }
 }

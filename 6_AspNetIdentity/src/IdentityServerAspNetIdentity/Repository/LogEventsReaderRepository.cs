@@ -25,7 +25,7 @@ namespace IdentityServerAspNetIdentity.Repository
 
         public IEnumerable<LogEvent> GetList(Func<LogEvent, bool> predicate, int skip, int take, out int total)
         {
-            return _applicationEventDbContext.Events.SkipTakeFuncPredicate(predicate, skip, take, out total);
+            return _applicationEventDbContext.Events.OrderByDescending(l=>l.Id).SkipTakeFuncPredicate(predicate, skip, take, out total);
         }
 
         public int IndexOf(Func<LogEvent, bool> predicate, LogEvent entity)
