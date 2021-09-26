@@ -1,6 +1,8 @@
 ﻿using AMir.Wrapper;
+using IdentityServerAspNetIdentity.Commands.ApiScopes;
 using IdentityServerAspNetIdentity.Core;
 using IdentityServerAspNetIdentity.Queries.ApiScopes;
+using IdentityServerAspNetIdentity.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -22,6 +24,53 @@ namespace IdentityServerAspNetIdentity.Controllers
         {
             _mediator = mediator;
         }
+
+        [HttpGet]
+        public IActionResult CreateStart(string returnUrl = null)
+        {
+            TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW);
+            return RedirectToAction("Create", new { returnUrl = returnUrl });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Create(string returnUrl = null)
+        {
+            if (string.IsNullOrWhiteSpace(TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW))) return RedirectToAction("Index");
+            TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW);
+            var model = await _mediator.Send(new CreateApiScopeGetQuery(new ApiScopeCreateViewModel()));
+            model.ReturnUrl_VmProperty = returnUrl;
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateAsync([FromForm()] ApiScopeCreateViewModel model)
+        {
+            if (string.IsNullOrWhiteSpace(TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW))) return RedirectToAction("Index");
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    HttpParams httpParams = IdentityServerAspNetIdentity.Core.HttpParams.Get(model.ReturnUrl_VmProperty);
+                    var postModel = await _mediator.Send(new CreateApiScopesPostCommand(model));
+                    httpParams.SelectedId = postModel.Id;
+
+                    TempData.SetValue(KeyWord.KEY_TEMPDATA_INFO, $"ApiScope '{postModel.Name}' has been CREATED");
+
+                    return RedirectPermanent($"/ApiScopes{httpParams.QueryStringFromProperties}");
+                }
+                var getModel = await _mediator.Send(new CreateApiScopeGetQuery(model));
+                TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW);
+                return View(getModel);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+        }
+
+
+
 
         public async Task<IActionResult> Index(string search = null)
         {

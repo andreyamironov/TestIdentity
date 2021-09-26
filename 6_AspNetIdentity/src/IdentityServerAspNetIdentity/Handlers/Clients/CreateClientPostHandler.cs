@@ -26,7 +26,7 @@ namespace IdentityServerAspNetIdentity.Handlers.Clients
         public Task<ClientViewModel> Handle(CreateClientPostCommand request, CancellationToken cancellationToken)
         {
             ClientCreateViewModel createClientViewModel = request.CreateClientViewModel;
-            IdentityServer4.Models.Client client = //new IdentityServer4.Models.Client();
+            IdentityServer4.Models.Client client = 
                 _mapper.Map<ClientCreateViewModel, IdentityServer4.Models.Client>(createClientViewModel);
 
 
