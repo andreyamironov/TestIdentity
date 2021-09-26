@@ -12,6 +12,7 @@ namespace IdentityServerAspNetIdentity.Mapping
         {
             CreateMap<IdentityServer4.EntityFramework.Entities.ApiScope, ApiScopeViewModel>();
             CreateMap<IdentityServer4.EntityFramework.Entities.ApiScope, ApiScopeEditViewModel>();
+            CreateMap<IdentityServer4.EntityFramework.Entities.ApiScope, ApiScopeDetailsViewModel>();
         }
     }
 }

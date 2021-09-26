@@ -23,7 +23,8 @@ namespace IdentityServerAspNetIdentity.Repository.ApiScopes
 
         public void Delete(ApiScope entity)
         {
-            throw new NotImplementedException();
+            _configurationDbContext.ApiScopes.Remove(entity);
+            _configurationDbContext.SaveChanges();
         }
 
         public ApiScope Update(ApiScope originalEntity, ApiScope source = null)

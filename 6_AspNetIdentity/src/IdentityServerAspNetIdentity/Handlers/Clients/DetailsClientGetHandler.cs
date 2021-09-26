@@ -25,9 +25,9 @@ namespace IdentityServerAspNetIdentity.Handlers.Clients
 
         public Task<ClientDetailsViewModel> Handle(DetailsClientGetQuery request, CancellationToken cancellationToken)
         {
-            var dbEntities = _reader.Get(c => c.Id == request.Id);
-            var mapModels = _mapper.Map<IdentityServer4.EntityFramework.Entities.Client, ClientDetailsViewModel>(dbEntities);
-            return Task.FromResult(mapModels);
+            var dbEntity = _reader.Get(c => c.Id == request.Id);
+            var mapModel = _mapper.Map<IdentityServer4.EntityFramework.Entities.Client, ClientDetailsViewModel>(dbEntity);
+            return Task.FromResult(mapModel);
         }
     }
 }
