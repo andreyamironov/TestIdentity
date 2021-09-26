@@ -28,7 +28,15 @@ namespace IdentityServerAspNetIdentity.Repository.ApiScopes
 
         public ApiScope Update(ApiScope originalEntity, ApiScope source = null)
         {
-            throw new NotImplementedException();
+            if (source == null) _configurationDbContext.ApiScopes.Update(originalEntity);
+            else
+            {
+                source.Id = originalEntity.Id;
+                _configurationDbContext.Entry(originalEntity).CurrentValues.SetValues(source);
+            }
+            _configurationDbContext.SaveChanges();
+
+            return originalEntity;
         }
     }
 }

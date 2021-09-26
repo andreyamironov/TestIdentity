@@ -11,6 +11,7 @@ namespace IdentityServerAspNetIdentity.Mapping
         public ApiScopeMapperConfiguration()
         {
             CreateMap<IdentityServer4.EntityFramework.Entities.ApiScope, ApiScopeViewModel>();
+            CreateMap<IdentityServer4.EntityFramework.Entities.ApiScope, ApiScopeEditViewModel>();
         }
     }
 }

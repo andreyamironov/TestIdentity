@@ -27,12 +27,12 @@ namespace IdentityServerAspNetIdentity.Handlers.Clients
 
         public Task<ClientEditViewModel> Handle(EditClientPostCommand request, CancellationToken cancellationToken)
         {
-            ClientEditViewModel clientEditViewModel = request.ClientEditViewModel;
+            //ClientEditViewModel clientEditViewModel = request.ClientEditViewModel;
 
-            IdentityServer4.Models.Client client = clientEditViewModel;
+            IdentityServer4.Models.Client client = request.ClientEditViewModel;
             var sourse = client.ToEntity();
 
-            var originalEntity = _reader.Get(c => c.Id == clientEditViewModel.Id);
+            var originalEntity = _reader.Get(c => c.Id == request.ClientEditViewModel.Id);
            
             var editEntity = _writer.Update(originalEntity,sourse);
 

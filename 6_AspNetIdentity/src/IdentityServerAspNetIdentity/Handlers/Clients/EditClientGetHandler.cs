@@ -28,14 +28,14 @@ namespace IdentityServerAspNetIdentity.Handlers.Clients
 
         public Task<ClientEditViewModel> Handle(EditClientGetQuery request, CancellationToken cancellationToken)
         {
-            var dbEntities  = _reader.Get(c=>c.Id == request.Id);
-            var mapModels   = _mapper.Map<IdentityServer4.EntityFramework.Entities.Client, ClientEditViewModel>(dbEntities);
+            var dbEntitiy  = _reader.Get(c=>c.Id == request.Id);
+            var mapModel   = _mapper.Map<IdentityServer4.EntityFramework.Entities.Client, ClientEditViewModel>(dbEntitiy);
 
-            mapModels.SelectAccessTokenTypes = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(Enum.GetNames(typeof(AccessTokenType)));
-            mapModels.SelectTokenExpirations = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(Enum.GetNames(typeof(TokenExpiration)));
-            mapModels.SelectTokenUsages = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(Enum.GetNames(typeof(TokenUsage)));
+            mapModel.SelectAccessTokenTypes = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(Enum.GetNames(typeof(AccessTokenType)));
+            mapModel.SelectTokenExpirations = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(Enum.GetNames(typeof(TokenExpiration)));
+            mapModel.SelectTokenUsages = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(Enum.GetNames(typeof(TokenUsage)));
 
-            return Task.FromResult(mapModels);
+            return Task.FromResult(mapModel);
         }
     }
 }
