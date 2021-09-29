@@ -120,6 +120,9 @@ namespace IdentityServerAspNetIdentity
             services.AddTransient(typeof(IReaderByOwnerRepository<int, ClientScope, int>), typeof(Repository.ClientScopes.ClientScopesReaderRepository));
             services.AddTransient(typeof(IReaderByOwnerRepository<int, ClientGrantType, int>), typeof(Repository.ClientGrantTypes.ClientGrantTypesReaderRepository));
 
+            services.AddTransient(typeof(IReaderRepository<IdentityResource, int>), typeof(Repository.IdentityResources.IdentityResourcesReaderRepository));
+
+
             services.AddTransient(typeof(IReaderRepository<ApiScope, int>), typeof(Repository.ApiScopes.ApiScopesReaderRepository));
             services.AddTransient(typeof(IWriterRepository<ApiScope>), typeof(Repository.ApiScopes.ApiScopesWriterRepository));
 
