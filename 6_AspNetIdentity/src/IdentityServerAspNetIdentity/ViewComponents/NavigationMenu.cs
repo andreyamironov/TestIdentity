@@ -18,7 +18,7 @@ namespace IdentityServerAspNetIdentity.ViewComponents
             {
                 model.Add(new MenuItem() { Controller = "Users", Action = "Index", Header = "Users" });
                 model.Add(new MenuItem() { Controller = "Clients", Action = "Index", Header = "Clients" });
-                model.Add(new MenuItem() { Controller = "IdentityResouces", Action = "Index", Header = "IdentityResouces" });
+                model.Add(new MenuItem() { Controller = "IdentityResources", Action = "Index", Header = "IdentityResources" });
                 model.Add(new MenuItem() { Controller = "ApiScopes", Action = "Index", Header = "ApiScopes" });
                 model.Add(new MenuItem() { Controller = "LogEvents", Action = "Index", Header = "Journal" }); 
             }
