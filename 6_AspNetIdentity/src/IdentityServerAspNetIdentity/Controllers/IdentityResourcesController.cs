@@ -1,6 +1,7 @@
 ﻿using AMir.Wrapper;
 using IdentityServerAspNetIdentity.Core;
 using IdentityServerAspNetIdentity.Queries.IdentityResource;
+using IdentityServerAspNetIdentity.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,22 @@ namespace IdentityServerAspNetIdentity.Controllers
 
             var model = await _mediator.Send(new GetIdentityResourcesPagerListQuery(httpParams));
 
+            return View(model);
+        }
+        [HttpGet]
+        public IActionResult CreateStart(string returnUrl = null)
+        {
+            TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW);
+            return RedirectToAction("Create", new { returnUrl = returnUrl });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Create(string returnUrl = null)
+        {
+            if (string.IsNullOrWhiteSpace(TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW))) return RedirectToAction("Index");
+            TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW);
+            var model = await _mediator.Send(new CreateIdentityResourceGetQuery(new IdentityResourceCreateViewModel()));
+            model.ReturnUrl_VmProperty = returnUrl;
             return View(model);
         }
     }
