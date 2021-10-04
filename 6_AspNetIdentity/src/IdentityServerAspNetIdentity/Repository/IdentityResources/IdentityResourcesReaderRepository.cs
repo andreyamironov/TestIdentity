@@ -17,7 +17,7 @@ namespace IdentityServerAspNetIdentity.Repository.IdentityResources
 
         public IdentityResource Get(Func<IdentityResource, bool> predicate)
         {
-            throw new NotImplementedException();
+            return _configurationDbContext.IdentityResources.FirstOrDefault(predicate);
         }
 
         public IEnumerable<IdentityResource> GetList(Func<IdentityResource, bool> predicate, int skip, int take, out int total)
@@ -27,7 +27,10 @@ namespace IdentityServerAspNetIdentity.Repository.IdentityResources
 
         public int IndexOf(Func<IdentityResource, bool> predicate, IdentityResource entity)
         {
-            throw new NotImplementedException();
+            if (predicate != null)
+                return _configurationDbContext.IdentityResources.Where(predicate).IndexOf(entity);
+            else
+                return _configurationDbContext.IdentityResources.IndexOf(entity);
         }
     }
 }

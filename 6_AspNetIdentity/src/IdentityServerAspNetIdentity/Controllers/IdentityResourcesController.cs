@@ -1,4 +1,5 @@
 ﻿using AMir.Wrapper;
+using IdentityServerAspNetIdentity.Commands.IdentityResource;
 using IdentityServerAspNetIdentity.Core;
 using IdentityServerAspNetIdentity.Queries.IdentityResource;
 using IdentityServerAspNetIdentity.ViewModels;
@@ -24,6 +25,51 @@ namespace IdentityServerAspNetIdentity.Controllers
             _mediator = mediator;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Create(string returnUrl = null)
+        {
+            if (string.IsNullOrWhiteSpace(TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW))) return RedirectToAction("Index");
+            TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW);
+            var model = await _mediator.Send(new CreateIdentityResourceGetQuery(new IdentityResourceCreateViewModel()));
+            model.ReturnUrl_VmProperty = returnUrl;
+            return View(model);
+        }
+      
+        [HttpGet]
+        public IActionResult CreateStart(string returnUrl = null)
+        {
+            TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW);
+            return RedirectToAction("Create", new { returnUrl = returnUrl });
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateAsync([FromForm()] IdentityResourceCreateViewModel model)
+        {
+            if (string.IsNullOrWhiteSpace(TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW))) return RedirectToAction("Index");
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    HttpParams httpParams = IdentityServerAspNetIdentity.Core.HttpParams.Get(model.ReturnUrl_VmProperty);
+                    var postModel = await _mediator.Send(new CreateIdentityResourcePostCommand(model));
+                    httpParams.SelectedId = postModel.Id;
+
+                    TempData.SetValue(KeyWord.KEY_TEMPDATA_INFO, $"IdentityResource '{postModel.Name}' has been CREATED");
+
+                    return RedirectPermanent($"/IdentityResources{httpParams.QueryStringFromProperties}");
+                }
+                var getModel = await _mediator.Send(new CreateIdentityResourceGetQuery(model));
+                TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW);
+                return View(getModel);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+        }
+
         public async Task<IActionResult> Index(string search = null)
         {
             //var tmpId = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ORIGINAL_ID, true);
@@ -37,22 +83,6 @@ namespace IdentityServerAspNetIdentity.Controllers
 
             var model = await _mediator.Send(new GetIdentityResourcesPagerListQuery(httpParams));
 
-            return View(model);
-        }
-        [HttpGet]
-        public IActionResult CreateStart(string returnUrl = null)
-        {
-            TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW);
-            return RedirectToAction("Create", new { returnUrl = returnUrl });
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Create(string returnUrl = null)
-        {
-            if (string.IsNullOrWhiteSpace(TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW))) return RedirectToAction("Index");
-            TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW);
-            var model = await _mediator.Send(new CreateIdentityResourceGetQuery(new IdentityResourceCreateViewModel()));
-            model.ReturnUrl_VmProperty = returnUrl;
             return View(model);
         }
     }

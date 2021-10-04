@@ -52,7 +52,7 @@ namespace IdentityServerAspNetIdentity.Controllers
                 if (ModelState.IsValid)
                 {
                     HttpParams httpParams = IdentityServerAspNetIdentity.Core.HttpParams.Get(model.ReturnUrl_VmProperty);
-                    var postModel = await _mediator.Send(new CreateApiScopesPostCommand(model));
+                    var postModel = await _mediator.Send(new CreateApiScopePostCommand(model));
                     httpParams.SelectedId = postModel.Id;
 
                     TempData.SetValue(KeyWord.KEY_TEMPDATA_INFO, $"ApiScope '{postModel.Name}' has been CREATED");

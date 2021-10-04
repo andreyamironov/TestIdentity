@@ -43,20 +43,20 @@
             <tbody>
                 @foreach (var item in Model.Items)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TimeStamp)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Level)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Message)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Exception)
-                        </td>
-                    </tr>
+                <tr>
+                    <td class="col-1">
+                        @Html.DisplayFor(modelItem => item.TimeStamp)
+                    </td>
+                    <td class="col-2">
+                        @Html.DisplayFor(modelItem => item.Level)
+                    </td>
+                    <td class=" col-3">
+                        @Html.DisplayFor(modelItem => item.Message)
+                    </td>
+                    <td class="col-6">
+                        @Html.DisplayFor(modelItem => item.Exception)
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

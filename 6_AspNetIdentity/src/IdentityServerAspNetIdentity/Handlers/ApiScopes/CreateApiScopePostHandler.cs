@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace IdentityServerAspNetIdentity.Handlers.ApiScopes
 {
-    public class CreateApiScopePostHandler : IRequestHandler<CreateApiScopesPostCommand, ApiScopeViewModel>
+    public class CreateApiScopePostHandler : IRequestHandler<CreateApiScopePostCommand, ApiScopeViewModel>
     {
         IWriterRepository<IdentityServer4.EntityFramework.Entities.ApiScope> _writer;
         IMapper _mapper;
@@ -23,7 +23,7 @@ namespace IdentityServerAspNetIdentity.Handlers.ApiScopes
             _mapper = mapper;
         }
 
-        public Task<ApiScopeViewModel> Handle(CreateApiScopesPostCommand request, CancellationToken cancellationToken)
+        public Task<ApiScopeViewModel> Handle(CreateApiScopePostCommand request, CancellationToken cancellationToken)
         {
             ApiScopeCreateViewModel apiScopeCreateViewModel  = request.ApiScopeCreateViewModel;
             IdentityServer4.Models.ApiScope apiScope =

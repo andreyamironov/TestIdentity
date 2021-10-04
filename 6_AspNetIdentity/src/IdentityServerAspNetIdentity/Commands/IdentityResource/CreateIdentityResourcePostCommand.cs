@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace IdentityServerAspNetIdentity.Commands.IdentityResource
 {
-    public record CreateIdentityResourcePostCommand(IdentityResourceCreateViewModel ApiScopeCreateViewModel) : IRequest<IdentityResourceViewModel>;
+    public record CreateIdentityResourcePostCommand(IdentityResourceCreateViewModel IdentityResourceCreateViewModel) : IRequest<IdentityResourceViewModel>;
 }

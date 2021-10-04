@@ -113,15 +113,17 @@ namespace IdentityServerAspNetIdentity
             //        options.ClientSecret = "copy client secret from Google here";
             //    });
 
-
+            //TODO Старый подход, переделать
             services.AddTransient(typeof(UsersBroker));
             services.AddTransient(typeof(UserClaimsBroker));
+
+            //TODO Новый подход
             services.AddTransient(typeof(IReaderRepository<Client, int>), typeof(Repository.Clients.ClientsReaderRepository));
             services.AddTransient(typeof(IReaderByOwnerRepository<int, ClientScope, int>), typeof(Repository.ClientScopes.ClientScopesReaderRepository));
             services.AddTransient(typeof(IReaderByOwnerRepository<int, ClientGrantType, int>), typeof(Repository.ClientGrantTypes.ClientGrantTypesReaderRepository));
 
             services.AddTransient(typeof(IReaderRepository<IdentityResource, int>), typeof(Repository.IdentityResources.IdentityResourcesReaderRepository));
-
+            services.AddTransient(typeof(IWriterRepository<IdentityResource>), typeof(Repository.IdentityResources.IdentityResourcesWriterRepository));
 
             services.AddTransient(typeof(IReaderRepository<ApiScope, int>), typeof(Repository.ApiScopes.ApiScopesReaderRepository));
             services.AddTransient(typeof(IWriterRepository<ApiScope>), typeof(Repository.ApiScopes.ApiScopesWriterRepository));

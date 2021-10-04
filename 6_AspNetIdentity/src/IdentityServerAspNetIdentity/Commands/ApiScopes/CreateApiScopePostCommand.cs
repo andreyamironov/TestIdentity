@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace IdentityServerAspNetIdentity.Commands.ApiScopes
 {
-    public record CreateApiScopesPostCommand(ApiScopeCreateViewModel ApiScopeCreateViewModel) : IRequest<ApiScopeViewModel>;
+    public record CreateApiScopePostCommand(ApiScopeCreateViewModel ApiScopeCreateViewModel) : IRequest<ApiScopeViewModel>;
 }
