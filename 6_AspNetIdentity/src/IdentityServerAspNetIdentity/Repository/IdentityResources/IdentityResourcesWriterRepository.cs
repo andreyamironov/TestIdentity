@@ -28,7 +28,15 @@ namespace IdentityServerAspNetIdentity.Repository.IdentityResources
 
         public IdentityResource Update(IdentityResource originalEntity, IdentityResource source = null)
         {
-            throw new NotImplementedException();
+            if (source == null) _configurationDbContext.IdentityResources.Update(originalEntity);
+            else
+            {
+                source.Id = originalEntity.Id;
+                _configurationDbContext.Entry(originalEntity).CurrentValues.SetValues(source);
+            }
+            _configurationDbContext.SaveChanges();
+
+            return originalEntity;
         }
     }
 }

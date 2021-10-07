@@ -16,9 +16,17 @@ namespace IdentityServerAspNetIdentity.Handlers.IdentityResources
         IReaderRepository<IdentityServer4.EntityFramework.Entities.IdentityResource, int> _reader;
         IMapper _mapper;
 
+        public EditIdentityResourceGetHandler(IReaderRepository<IdentityServer4.EntityFramework.Entities.IdentityResource, int> reader, IMapper mapper)
+        {
+            _reader = reader;
+            _mapper = mapper;
+        }
+
         public Task<IdentityResourceEditViewModel> Handle(EditIdentityResourceGetQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var dbEntity = _reader.Get(c => c.Id == request.Id);
+            var mapModel = _mapper.Map<IdentityServer4.EntityFramework.Entities.IdentityResource, IdentityResourceEditViewModel>(dbEntity);
+            return Task.FromResult(mapModel);
         }
     }
 }

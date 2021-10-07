@@ -70,6 +70,53 @@ namespace IdentityServerAspNetIdentity.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult EditStart(int id, string returnUrl = null)
+        {
+            TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW);
+            return RedirectToAction("Edit", new { id = id, returnUrl = returnUrl });
+        }
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id, string returnUrl = null)
+        {
+            if (string.IsNullOrWhiteSpace(TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW))) return RedirectToAction("Index");
+
+            var model = await _mediator.Send(new EditIdentityResourceGetQuery(id));
+            if (model == null) return NotFound();
+
+            TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW);
+            TempData.SetValue(KeyWord.KEY_TEMPDATA_ORIGINAL_ID, id);
+
+            model.ReturnUrl_VmProperty = returnUrl;
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromForm()] IdentityResourceEditViewModel model)
+        {
+            if (string.IsNullOrWhiteSpace(TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW))) return RedirectToAction("Index");
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var tmpId = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ORIGINAL_ID);
+                    model.Id = int.Parse(tmpId);
+
+                    HttpParams httpParams = IdentityServerAspNetIdentity.Core.HttpParams.Get(model.ReturnUrl_VmProperty);
+                    var editViewModel = await _mediator.Send(new EditIdentityResourcePostCommand(model));
+                    httpParams.SelectedId = editViewModel.Id;
+
+                    return RedirectPermanent($"/IdentityResources{httpParams.QueryStringFromProperties}");
+                }
+                TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW);
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+        }
+
         public async Task<IActionResult> Index(string search = null)
         {
             //var tmpId = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ORIGINAL_ID, true);

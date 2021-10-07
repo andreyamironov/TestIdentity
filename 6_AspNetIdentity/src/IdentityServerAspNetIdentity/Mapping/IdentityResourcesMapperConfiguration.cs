@@ -12,6 +12,8 @@ namespace IdentityServerAspNetIdentity.Mapping
         {
             CreateMap<IdentityServer4.EntityFramework.Entities.IdentityResource, IdentityResourceViewModel>();
             CreateMap<IdentityResourceCreateViewModel, IdentityServer4.EntityFramework.Entities.IdentityResource>();
+            CreateMap<IdentityServer4.EntityFramework.Entities.IdentityResource, IdentityResourceEditViewModel>();
+
         }
     }
 }
