@@ -117,6 +117,29 @@ namespace IdentityServerAspNetIdentity.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult DeleteStart(int id, string returnUrl = null)
+        {
+            TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW);
+            return RedirectToAction("Delete", new { id = id, returnUrl = returnUrl });
+        }
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id, string returnUrl = null)
+        {
+            if (string.IsNullOrWhiteSpace(TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW))) return RedirectToAction("Index");
+
+
+            var model = await _mediator.Send(new EditIdentityResourceGetQuery(id));
+            if (model == null) return NotFound();
+
+            TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW);
+            TempData.SetValue(KeyWord.KEY_TEMPDATA_ORIGINAL_ID, $"id:{model.Id};name:{model.Name}");
+
+
+            model.ReturnUrl_VmProperty = returnUrl;
+            return View(model);
+        }
+
         public async Task<IActionResult> Index(string search = null)
         {
             //var tmpId = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ORIGINAL_ID, true);

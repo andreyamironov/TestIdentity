@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication;
 using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using MvcClient.Filters;
 
 namespace MvcClient.Controllers
 {
@@ -34,7 +35,7 @@ namespace MvcClient.Controllers
         }
 
 
-        [Authorize(Keys.Key1)]
+        [MyFilter("app1.users.create")]
         public IActionResult Privacy()
         {
             return View();
