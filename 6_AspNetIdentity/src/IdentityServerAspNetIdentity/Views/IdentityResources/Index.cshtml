@@ -37,23 +37,59 @@
                 <th>
                     Name
                 </th>
+                <th>
+                    DisplayName
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Enabled
+                </th>
+                <th>
+                    Emphasize
+                </th>
+                <th>
+                    Required
+                </th>
+                <th>
+                    ShowInDiscoveryDocument
+                </th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model.Items)
             {
-            <tr>
-                <td>
-                    @await Component.InvokeAsync(nameof(IdentityServerAspNetIdentity.ViewComponents.DropDownAction)
-                   , new { controller = Model.ControllerName, routedata = new { id = item.Id }, returnurl = Model.QueryString })
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        @await Component.InvokeAsync(nameof(IdentityServerAspNetIdentity.ViewComponents.DropDownAction)
+                       , new { controller = Model.ControllerName, routedata = new { id = item.Id }, returnurl = Model.QueryString })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DisplayName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Enabled)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Emphasize)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Required)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ShowInDiscoveryDocument)
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

@@ -180,6 +180,16 @@ namespace IdentityServerAspNetIdentity.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Details(int id, string returnUrl = null)
+        {
+            TempData.SetValue(KeyWord.KEY_TEMPDATA_RETURN_URL, returnUrl);
+
+            var model = await _mediator.Send(new DetailsIdentityResourceGetQuery(id));
+            if (model == null) return NotFound();
+            //model.ReturnUrl_VmProperty = returnUrl;
+            return View(model);
+        }
         public async Task<IActionResult> Index(string search = null)
         {
             //var tmpId = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ORIGINAL_ID, true);

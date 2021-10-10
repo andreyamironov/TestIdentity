@@ -14,7 +14,7 @@ namespace MvcClient.Filters
         readonly string _keyPolicy;
         readonly string _appPolicy;
 
-
+        const char separator = ',';
         public MyFilter(string keyPolicy, string appPolicy)
         {
             _keyPolicy = keyPolicy;
@@ -22,9 +22,27 @@ namespace MvcClient.Filters
         }
         public void OnAuthorization(AuthorizationFilterContext context)
         {
+            bool isOk = false;
+
             var claims = context.HttpContext.User.Claims;
-            var claim = claims.Where(c => c.Type == _keyPolicy);
-            context.Result = new StatusCodeResult(StatusCodes.Status403Forbidden);
+            var claim = claims.Where(c => c.Type == _keyPolicy).FirstOrDefault();
+            if(claim !=null)
+            {
+                if(!string.IsNullOrWhiteSpace(claim.Value))
+                {
+                    var policies = System.Text.Json.JsonSerializer.Deserialize<string[]>(claim.Value);
+                    foreach(var policy in policies)
+                    {
+                        if (String.Compare(policy, _appPolicy) == 0)
+                        {
+                            isOk = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (!isOk) context.Result = new StatusCodeResult(StatusCodes.Status403Forbidden);
         }
     }
 }

@@ -32,9 +32,6 @@ namespace MvcClient
                 options.ClientId        = "mvc";
                 options.ClientSecret    = "secret";
                 options.ResponseType    = "code";
-                //options.Scope.Add("profile");
-                //options.Scope.Add("policy");
-
 
                 options.Scope.Add("api1");
                 options.SaveTokens = true;
