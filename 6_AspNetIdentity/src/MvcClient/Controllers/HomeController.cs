@@ -35,7 +35,7 @@ namespace MvcClient.Controllers
         }
 
 
-        [MyFilter("app1.users.create")]
+        [MyFilter("policy","app1.users.create")]
         public IActionResult Privacy()
         {
             return View();

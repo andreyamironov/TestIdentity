@@ -140,6 +140,46 @@ namespace IdentityServerAspNetIdentity.Controllers
             return View(model);
         }
 
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirm([FromForm()] ApiScopeEditViewModel model)
+        {
+            if (string.IsNullOrWhiteSpace(TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW))) return RedirectToAction("Index");
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    //var tmpId = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ORIGINAL_ID);
+                    //model.Id = int.Parse(tmpId);
+
+                    string tmpId = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ORIGINAL_ID);
+                    IDictionary<string, string> tmpKeyValue = tmpId.SplitToKeyValue();
+
+                    string idFromTempdate = tmpKeyValue["id"];
+                    int idOriginal;
+                    int.TryParse(idFromTempdate, out idOriginal);
+
+                    string nameFromTempdate = tmpKeyValue["name"];
+                    model.Id = idOriginal;
+
+                    HttpParams httpParams = IdentityServerAspNetIdentity.Core.HttpParams.Get(model.ReturnUrl_VmProperty);
+                    var deleteResult = await _mediator.Send(new DeleteIdentityResourcePostCommand(model.Id));
+
+                    if (deleteResult) TempData.SetValue(KeyWord.KEY_TEMPDATA_INFO, $"IdentityResource '{nameFromTempdate}' has been deleted");
+                    else TempData.SetValue(KeyWord.KEY_TEMPDATA_INFO, $"IdentityResource '{nameFromTempdate}' deletion ERROR");
+
+                    return RedirectPermanent($"/IdentityResources{httpParams.QueryStringFromProperties}");
+                }
+                TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW);
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+        }
+
         public async Task<IActionResult> Index(string search = null)
         {
             //var tmpId = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ORIGINAL_ID, true);

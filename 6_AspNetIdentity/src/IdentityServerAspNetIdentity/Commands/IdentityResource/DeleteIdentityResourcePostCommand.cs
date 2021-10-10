@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace IdentityServerAspNetIdentity.Commands.IdentityResource
 {
-    public record DeleteIdentityResourcePostCommand(int id) : IRequest<bool>;
+    public record DeleteIdentityResourcePostCommand(int Id) : IRequest<bool>;
 }

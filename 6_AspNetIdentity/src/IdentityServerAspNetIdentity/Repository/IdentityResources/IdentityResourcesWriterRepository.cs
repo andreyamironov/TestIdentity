@@ -23,7 +23,8 @@ namespace IdentityServerAspNetIdentity.Repository.IdentityResources
 
         public void Delete(IdentityResource entity)
         {
-            throw new NotImplementedException();
+            _configurationDbContext.IdentityResources.Remove(entity);
+            _configurationDbContext.SaveChanges();
         }
 
         public IdentityResource Update(IdentityResource originalEntity, IdentityResource source = null)
