@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityServerAspNetIdentity.Core;
 using IdentityServerAspNetIdentity.Models;
 
 namespace IdentityServerAspNetIdentity.ViewModels
@@ -12,17 +13,10 @@ namespace IdentityServerAspNetIdentity.ViewModels
         {
             base.ControllerName = "Users";
         }
-        new public string QueryString
+
+        public UsersViewModel(HttpParams httpParams, int total, IEnumerable<ApplicationUser> items) : base(httpParams, total, items)
         {
-            get
-            {
-                if (string.IsNullOrEmpty(base.QueryString)) return base.ControllerName;
-                else return base.QueryString;
-            }
-            set
-            {
-                base.QueryString = value;
-            }
+            base.ControllerName = "Users";
         }
     }
 }

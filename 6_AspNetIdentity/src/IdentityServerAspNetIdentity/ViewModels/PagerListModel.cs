@@ -32,7 +32,6 @@ namespace IdentityServerAspNetIdentity.ViewModels
             }
         }
 
-
         public IEnumerable<T> Items { get; set; }
         public T SelectedItem { get; set;}
         public PagerListModel()
