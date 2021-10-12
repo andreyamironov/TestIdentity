@@ -1,4 +1,5 @@
 ﻿using AMir.Interface.Data;
+using AMir.Wrapper;
 using IdentityServerAspNetIdentity.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -24,7 +25,7 @@ namespace IdentityServerAspNetIdentity.Repository.Users
 
         public IEnumerable<ApplicationUser> GetList(Func<ApplicationUser, bool> predicate, int skip, int take, out int total)
         {
-            throw new NotImplementedException();
+            return _userManager.Users.SkipTakeFuncPredicate(predicate, skip, take, out total);
         }
 
         public int IndexOf(Func<ApplicationUser, bool> predicate, ApplicationUser entity)

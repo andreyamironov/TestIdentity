@@ -23,6 +23,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.Linq;
 using System.Reflection;
 
@@ -115,6 +116,9 @@ namespace IdentityServerAspNetIdentity
 
             //TODO Старый подход, переделать
             services.AddTransient(typeof(UsersBroker));
+            services.AddTransient(typeof(IReaderRepository<ApplicationUser, Guid>), typeof(Repository.Users.UsersReaderRepository));
+
+
             services.AddTransient(typeof(UserClaimsBroker));
 
             //TODO Новый подход

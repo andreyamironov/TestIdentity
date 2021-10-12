@@ -17,12 +17,12 @@ namespace IdentityServerAspNetIdentity.Handlers.Users
     public class GetUsersListHandler : IRequestHandler<GetUsersPagerListQuery, PagerListModel<ApplicationUser>>
     {
         IReaderRepository<ApplicationUser, int> _reader;
-        IMapper _mapper;
+        //IMapper _mapper;
 
-        public GetUsersListHandler(IReaderRepository<ApplicationUser, int> reader, IMapper mapper)
+        public GetUsersListHandler(IReaderRepository<ApplicationUser, int> reader)//, IMapper mapper)
         {
             _reader = reader;
-            _mapper = mapper;
+            //_mapper = mapper;
         }
 
         public Task<PagerListModel<ApplicationUser>> Handle(GetUsersPagerListQuery request, CancellationToken cancellationToken)

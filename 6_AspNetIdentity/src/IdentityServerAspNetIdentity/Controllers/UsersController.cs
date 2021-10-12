@@ -14,6 +14,8 @@ using IdentityServerAspNetIdentity.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using IdentityServerAspNetIdentity.Core;
 using IdentityServerAspNetIdentity.Models;
+using MediatR;
+using IdentityServerAspNetIdentity.Queries.Users;
 
 namespace IdentityServerAspNetIdentity.Controllers
 {
@@ -21,6 +23,9 @@ namespace IdentityServerAspNetIdentity.Controllers
    [Authorize(Roles = "Administrator")]
     public class UsersController : AppBaseController
     {
+        IMediator _mediator;
+
+
         private readonly ApplicationDbContext _applicationDbContext;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly UsersBroker _usersBroker;
@@ -29,27 +34,44 @@ namespace IdentityServerAspNetIdentity.Controllers
             ,ApplicationDbContext applicationDbContext 
             ,UserManager<ApplicationUser> userManager
             ,UsersBroker usersBroker
-            ,IDiagnosticContext diagnosticContext):base(webHostEnvironment,diagnosticContext)
+            ,IDiagnosticContext diagnosticContext
+            ,IMediator mediator):base(webHostEnvironment,diagnosticContext)
         {
             _applicationDbContext   = applicationDbContext;
             _userManager            = userManager;
             _usersBroker            = usersBroker;
+            _mediator               = mediator;
         }
 
-        public IActionResult Index(string search = null)
+        public async Task<IActionResult> Index(string search = null)
         {
-            var tmpId = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ORIGINAL_ID,true);
+            //var tmpId = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ORIGINAL_ID,true);
+            //var tempDataReturnUrl = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_RETURN_URL);
+
+            //IdentityServerAspNetIdentity.Core.HttpParams httpParams;
+            //if (!string.IsNullOrWhiteSpace(tempDataReturnUrl)) 
+            //    httpParams = IdentityServerAspNetIdentity.Core.HttpParams.Get(tempDataReturnUrl); 
+            //else 
+            //    httpParams = IdentityServerAspNetIdentity.Core.HttpParams.Get(HttpContext);
+
+            //var model = _usersBroker.Get(httpParams,tmpId);
+            ////_diagnosticContext.Set("Users_GET", User.Identity.Name);
+            //return View(model);
+
+
+            //var tmpId = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ORIGINAL_ID, true);
             var tempDataReturnUrl = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_RETURN_URL);
 
             IdentityServerAspNetIdentity.Core.HttpParams httpParams;
-            if (!string.IsNullOrWhiteSpace(tempDataReturnUrl)) 
-                httpParams = IdentityServerAspNetIdentity.Core.HttpParams.Get(tempDataReturnUrl); 
-            else 
-                httpParams = IdentityServerAspNetIdentity.Core.HttpParams.Get(HttpContext);
+            if (!string.IsNullOrWhiteSpace(tempDataReturnUrl))
+                httpParams = IdentityServerAspNetIdentity.Core.HttpParams.Get(tempDataReturnUrl);
+            else
+                httpParams = IdentityServerAspNetIdentity.Core.HttpParams.Get(HttpContext.Request.QueryString.Value);
 
-            var model = _usersBroker.Get(httpParams,tmpId);
-            //_diagnosticContext.Set("Users_GET", User.Identity.Name);
+            var model = await _mediator.Send(new GetUsersPagerListQuery(httpParams));
+
             return View(model);
+
         }
 
         [HttpGet]
@@ -150,7 +172,7 @@ namespace IdentityServerAspNetIdentity.Controllers
                 {
                     if (!string.IsNullOrWhiteSpace(returnUrl))
                         return RedirectPermanent(returnUrl);
-                    else return Index();
+                    else return await Index();
                 }
                 else
                 {

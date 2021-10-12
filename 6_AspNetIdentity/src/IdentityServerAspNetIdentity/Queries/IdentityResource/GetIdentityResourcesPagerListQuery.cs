@@ -8,5 +8,4 @@ using System.Threading.Tasks;
 namespace IdentityServerAspNetIdentity.Queries.IdentityResource
 {
     public record GetIdentityResourcesPagerListQuery(IdentityServerAspNetIdentity.Core.HttpParams HttpParams) : IRequest<PagerListModel<IdentityResourceViewModel>>;
-
 }
