@@ -75,11 +75,19 @@ namespace IdentityServerAspNetIdentity.Controllers
         }
 
         [HttpGet]
-        public ActionResult Details(string id,string returnUrl = null)
+        public  async Task<IActionResult> Details(string id,string returnUrl = null)
         {
+            //TempData.SetValue(KeyWord.KEY_TEMPDATA_RETURN_URL, returnUrl);
+            //var model = _userManager.FindByIdAsync(id);
+            //return View(model.Result);
+
+
             TempData.SetValue(KeyWord.KEY_TEMPDATA_RETURN_URL, returnUrl);
-            var model = _userManager.FindByIdAsync(id);
-            return View(model.Result);
+
+            var model = await _mediator.Send(new DetailsUserGetQuery(new Guid(id)));
+            if (model == null) return NotFound();
+            //model.ReturnUrl_VmProperty = returnUrl;
+            return View(model);
         }
 
         [HttpGet]

@@ -20,7 +20,7 @@ namespace IdentityServerAspNetIdentity.Repository.Users
 
         public ApplicationUser Get(Func<ApplicationUser, bool> predicate)
         {
-            throw new NotImplementedException();
+            return _userManager.Users.FirstOrDefault(predicate);
         }
 
         public IEnumerable<ApplicationUser> GetList(Func<ApplicationUser, bool> predicate, int skip, int take, out int total)
@@ -30,7 +30,10 @@ namespace IdentityServerAspNetIdentity.Repository.Users
 
         public int IndexOf(Func<ApplicationUser, bool> predicate, ApplicationUser entity)
         {
-            throw new NotImplementedException();
+            if (predicate != null)
+                return _userManager.Users.Where(predicate).IndexOf(entity);
+            else
+                return _userManager.Users.IndexOf(entity);
         }
     }
 }
