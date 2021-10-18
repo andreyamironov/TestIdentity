@@ -91,11 +91,30 @@ namespace IdentityServerAspNetIdentity.Controllers
         }
 
         [HttpGet]
-        public ActionResult Create(string returnUrl = null)
+        public IActionResult CreateStart(string returnUrl = null)
         {
-            TempData.SetValue(KeyWord.KEY_TEMPDATA_RETURN_URL, returnUrl);
-            return View();
+            TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW);
+            return RedirectToAction("Create", new { returnUrl = returnUrl });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Create(string returnUrl = null)
+        {
+            if (string.IsNullOrWhiteSpace(TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW))) return RedirectToAction("Index");
+            TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW);
+            var model = await _mediator.Send(new CreateUserGetQuery(new UserCreateViewModel()));
+            model.ReturnUrl_VmProperty = returnUrl;
+            return View(model);
+        }
+
+
+
+        //[HttpGet]
+        //public ActionResult Create(string returnUrl = null)
+        //{
+        //    TempData.SetValue(KeyWord.KEY_TEMPDATA_RETURN_URL, returnUrl);
+        //    return View();
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
