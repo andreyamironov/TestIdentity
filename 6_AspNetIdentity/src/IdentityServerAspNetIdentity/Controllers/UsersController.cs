@@ -16,6 +16,7 @@ using IdentityServerAspNetIdentity.Core;
 using IdentityServerAspNetIdentity.Models;
 using MediatR;
 using IdentityServerAspNetIdentity.Queries.Users;
+using IdentityServerAspNetIdentity.Commands.Users;
 
 namespace IdentityServerAspNetIdentity.Controllers
 {
@@ -106,54 +107,81 @@ namespace IdentityServerAspNetIdentity.Controllers
             model.ReturnUrl_VmProperty = returnUrl;
             return View(model);
         }
-
-
-
-        //[HttpGet]
-        //public ActionResult Create(string returnUrl = null)
-        //{
-        //    TempData.SetValue(KeyWord.KEY_TEMPDATA_RETURN_URL, returnUrl);
-        //    return View();
-        //}
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateAsync([Bind("Id,EMail,Password,ConfirmPassword")] UserCreateViewModel model)
+        public async Task<ActionResult> CreateAsync([FromForm()] UserCreateViewModel model)
         {
+            if (string.IsNullOrWhiteSpace(TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW))) return RedirectToAction("Index");
+
             try
             {
-                if (string.Compare(model.Password, model.ConfirmPassword) != 0) throw new  AMir.Exception.PasswordConfirmException();
                 if (ModelState.IsValid)
                 {
-                    var user = new ApplicationUser()
+                    HttpParams httpParams = IdentityServerAspNetIdentity.Core.HttpParams.Get(model.ReturnUrl_VmProperty);
+                    var result = await _mediator.Send(new CreateUserPostCommand(model));
+                    if (result.Result.Succeeded == true)
                     {
-                        UserName    = model.EMail,
-                        Email       = model.EMail,
-                        EmailConfirmed = true
-                    };
-
-                    var result = await _userManager.CreateAsync(user, model.Password);
-                    if (result.Succeeded == true)
-                    {
-                        TempData.SetValue(KeyWord.KEY_TEMPDATA_ORIGINAL_ID,user.Id);
-                        return RedirectToAction(nameof(Index));
+                        httpParams.SelectedId = result.Id;
+                        TempData.SetValue(KeyWord.KEY_TEMPDATA_INFO, $"User '{result.Email}' has been CREATED");
+                        return RedirectPermanent($"/Users{httpParams.QueryStringFromProperties}");
                     }
 
                     StringBuilder sb = new StringBuilder();
-                    foreach(var er in result.Errors)
+                    foreach (var er in result.Result.Errors)
                     {
                         sb.AppendLine(er.Description);
                     }
 
-                    ViewBag.ERR  = sb.ToString();
+                    ViewBag.ERR = sb.ToString();                  
                 }
-                return View(model);
+                var getModel = await _mediator.Send(new CreateUserGetQuery(model));
+                TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW);
+                return View(getModel);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.ToString());
             }
         }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> CreateAsync([Bind("Id,EMail,Password,ConfirmPassword")] UserCreateViewModel model)
+        //{
+        //    try
+        //    {
+        //        if (string.Compare(model.Password, model.ConfirmPassword) != 0) throw new  AMir.Exception.PasswordConfirmException();
+        //        if (ModelState.IsValid)
+        //        {
+        //            var user = new ApplicationUser()
+        //            {
+        //                UserName    = model.EMail,
+        //                Email       = model.EMail,
+        //                EmailConfirmed = true
+        //            };
+
+        //            var result = await _userManager.CreateAsync(user, model.Password);
+        //            if (result.Succeeded == true)
+        //            {
+        //                TempData.SetValue(KeyWord.KEY_TEMPDATA_ORIGINAL_ID,user.Id);
+        //                return RedirectToAction(nameof(Index));
+        //            }
+
+        //            StringBuilder sb = new StringBuilder();
+        //            foreach(var er in result.Errors)
+        //            {
+        //                sb.AppendLine(er.Description);
+        //            }
+
+        //            ViewBag.ERR  = sb.ToString();
+        //        }
+        //        return View(model);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(ex.ToString());
+        //    }
+        //}
         
         [HttpGet]
         public async Task<IActionResult> Edit(string id, string returnUrl = null)
