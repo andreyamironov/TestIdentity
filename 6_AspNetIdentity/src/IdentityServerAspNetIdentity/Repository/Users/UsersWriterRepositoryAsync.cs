@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace IdentityServerAspNetIdentity.Repository.Users
 {
-    public class UsersWriterRepository : IWriterRepository<ApplicationUser>
+    public class UsersWriterRepositoryAsync : IWriterRepositoryAsync<UserCreateResult>
     {
         UserManager<ApplicationUser> _userManager;
         IPasswordValidator<ApplicationUser> _passwordValidator;
         IPasswordHasher<ApplicationUser> _passwordHasher;
 
-        public UsersWriterRepository(
+        public UsersWriterRepositoryAsync(
             UserManager<ApplicationUser> userManager
             , IPasswordValidator<ApplicationUser> passwordValidator
             , IPasswordHasher<ApplicationUser> passwordHasher)
@@ -26,17 +26,27 @@ namespace IdentityServerAspNetIdentity.Repository.Users
             this._passwordHasher    = passwordHasher;
         }
 
-        public ApplicationUser Create(ApplicationUser entity)
+        public async Task<UserCreateResult> Create(UserCreateResult entity)
+        {
+            try
+            {
+                var result = await _userManager.CreateAsync(entity, entity.Password);
+                entity.Result = result;
+                //return entity;
+            }
+            catch (Exception ex)
+            {
+                entity.Result = IdentityResult.Failed(new IdentityError() { Description = ex.Message });
+            }
+            return entity;
+        }
+
+        public Task Delete(UserCreateResult entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(ApplicationUser entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ApplicationUser Update(ApplicationUser originalEntity, ApplicationUser source = null)
+        public Task<UserCreateResult> Update(UserCreateResult originalEntity, UserCreateResult source = null)
         {
             throw new NotImplementedException();
         }

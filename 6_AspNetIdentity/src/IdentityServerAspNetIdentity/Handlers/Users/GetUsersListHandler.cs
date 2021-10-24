@@ -34,7 +34,7 @@ namespace IdentityServerAspNetIdentity.Handlers.Users
             int selectedIndexClient = 0;
             if (httpParams.SelectedId != null)
             {
-                    var getEntity = _reader.Get(c => c.Id == httpParams.SelectedId);
+                    var getEntity = _reader.Get(c => c.Id.ToString() == httpParams.SelectedId);
                     if (getEntity != null)
                         selectedIndexClient = _reader.IndexOf(predicate, getEntity);             
             }

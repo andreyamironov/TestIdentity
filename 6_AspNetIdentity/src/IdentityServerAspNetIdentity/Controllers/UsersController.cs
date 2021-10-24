@@ -143,45 +143,6 @@ namespace IdentityServerAspNetIdentity.Controllers
                 throw new Exception(ex.ToString());
             }
         }
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> CreateAsync([Bind("Id,EMail,Password,ConfirmPassword")] UserCreateViewModel model)
-        //{
-        //    try
-        //    {
-        //        if (string.Compare(model.Password, model.ConfirmPassword) != 0) throw new  AMir.Exception.PasswordConfirmException();
-        //        if (ModelState.IsValid)
-        //        {
-        //            var user = new ApplicationUser()
-        //            {
-        //                UserName    = model.EMail,
-        //                Email       = model.EMail,
-        //                EmailConfirmed = true
-        //            };
-
-        //            var result = await _userManager.CreateAsync(user, model.Password);
-        //            if (result.Succeeded == true)
-        //            {
-        //                TempData.SetValue(KeyWord.KEY_TEMPDATA_ORIGINAL_ID,user.Id);
-        //                return RedirectToAction(nameof(Index));
-        //            }
-
-        //            StringBuilder sb = new StringBuilder();
-        //            foreach(var er in result.Errors)
-        //            {
-        //                sb.AppendLine(er.Description);
-        //            }
-
-        //            ViewBag.ERR  = sb.ToString();
-        //        }
-        //        return View(model);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception(ex.ToString());
-        //    }
-        //}
         
         [HttpGet]
         public async Task<IActionResult> Edit(string id, string returnUrl = null)

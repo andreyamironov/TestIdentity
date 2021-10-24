@@ -117,6 +117,8 @@ namespace IdentityServerAspNetIdentity
             //TODO Старый подход, переделать
             services.AddTransient(typeof(UsersBroker));
             services.AddTransient(typeof(IReaderRepository<ApplicationUser, Guid>), typeof(Repository.Users.UsersReaderRepository));
+            services.AddTransient(typeof(IWriterRepositoryAsync<UserCreateResult>), typeof(Repository.Users.UsersWriterRepositoryAsync));
+
 
 
             services.AddTransient(typeof(UserClaimsBroker));

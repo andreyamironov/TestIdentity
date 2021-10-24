@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IdentityServerAspNetIdentity.ViewModels.Users
+namespace IdentityServerAspNetIdentity.Models
 {
-    public class UserCreateResultViewModel:ApplicationUser
+    public class UserCreateResult:ApplicationUser
     {
+        public string Password { get; set; }
         public IdentityResult Result { get; set; }
     }
 }

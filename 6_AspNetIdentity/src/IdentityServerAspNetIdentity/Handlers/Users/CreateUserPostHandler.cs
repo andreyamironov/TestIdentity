@@ -1,21 +1,36 @@
-﻿using IdentityServerAspNetIdentity.Commands.Users;
+﻿using AMir.Interface.Data;
+using IdentityServerAspNetIdentity.Commands.Users;
 using IdentityServerAspNetIdentity.Models;
-using IdentityServerAspNetIdentity.ViewModels.Users;
+using IdentityServerAspNetIdentity.ViewModels;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace IdentityServerAspNetIdentity.Handlers.Users
 {
-    public class CreateUserPostHandler : IRequestHandler<CreateUserPostCommand, UserCreateResultViewModel>
+    public class CreateUserPostHandler : IRequestHandler<CreateUserPostCommand, UserCreateResult>
     {
-        public Task<UserCreateResultViewModel> Handle(CreateUserPostCommand request, CancellationToken cancellationToken)
+        IWriterRepositoryAsync<UserCreateResult> _writer;
+
+        public CreateUserPostHandler(IWriterRepositoryAsync<UserCreateResult> writer)
         {
-            throw new NotImplementedException();
+            _writer = writer;
+        }
+
+        public Task<UserCreateResult> Handle(CreateUserPostCommand request, CancellationToken cancellationToken)
+        {
+            UserCreateViewModel userCreateViewModel = request.UserCreateViewModel;
+
+            UserCreateResult user = new UserCreateResult()
+            {
+                UserName = userCreateViewModel.EMail,
+                Email = userCreateViewModel.EMail,
+                EmailConfirmed = true,
+                Password= userCreateViewModel.Password           
+            };
+
+            var result = _writer.Create(user);
+            return result;
         }
     }
 }
