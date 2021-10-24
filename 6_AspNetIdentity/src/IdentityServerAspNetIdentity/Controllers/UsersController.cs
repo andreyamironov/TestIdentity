@@ -97,7 +97,6 @@ namespace IdentityServerAspNetIdentity.Controllers
             TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW);
             return RedirectToAction("Create", new { returnUrl = returnUrl });
         }
-
         [HttpGet]
         public async Task<IActionResult> Create(string returnUrl = null)
         {
@@ -143,66 +142,112 @@ namespace IdentityServerAspNetIdentity.Controllers
                 throw new Exception(ex.ToString());
             }
         }
-        
+
         [HttpGet]
-        public async Task<IActionResult> Edit(string id, string returnUrl = null)
+        public IActionResult EditStart(int id, string returnUrl = null)
         {
+            TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW);
+            return RedirectToAction("Edit", new { id = id, returnUrl = returnUrl });
+        }
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id, string returnUrl = null)
+        {
+            if (string.IsNullOrWhiteSpace(TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW))) return RedirectToAction("Index");
 
-            if (string.IsNullOrWhiteSpace(id))
-            {
-                return NotFound();
-            }
+            var model = await _mediator.Send(new EditUserGetQuery(id));
+            if (model == null) return NotFound();
 
-            TempData.SetValue(KeyWord.KEY_TEMPDATA_RETURN_URL, returnUrl);
+            TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW);
             TempData.SetValue(KeyWord.KEY_TEMPDATA_ORIGINAL_ID, id);
 
-            ApplicationUser user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            return View(
-                new UserEditViewModel()
-                {
-                    Id=user.Id.ToString(),
-                    EMail = user.Email,
-                    EmailConfirmed = user.EmailConfirmed
-                }
-                );
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(UserEditViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var returnUrl = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_RETURN_URL);
-                var tmpId = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ORIGINAL_ID);
-
-                model.OriginalId = tmpId;
-
-                var task = _usersBroker.Update(model);
-
-                if (task.Result.Succeeded)
-                {
-                    if (!string.IsNullOrWhiteSpace(returnUrl))
-                        return RedirectPermanent(returnUrl);
-                    else return await Index();
-                }
-                else
-                {
-                    foreach (var error in task.Result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
-
-                    TempData.SetValue(KeyWord.KEY_TEMPDATA_RETURN_URL, returnUrl);
-                    TempData.SetValue(KeyWord.KEY_TEMPDATA_ORIGINAL_ID, tmpId);
-                }              
-            }
+            model.ReturnUrl_VmProperty = returnUrl;
             return View(model);
         }
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromForm()] UserEditViewModel model)
+        {
+            if (string.IsNullOrWhiteSpace(TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW))) return RedirectToAction("Index");
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var tmpId = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ORIGINAL_ID);
+                    model.Id = tmpId;
+
+                    HttpParams httpParams = IdentityServerAspNetIdentity.Core.HttpParams.Get(model.ReturnUrl_VmProperty);
+                    var editViewModel = await _mediator.Send(new EditUserPostCommand(model));
+                    httpParams.SelectedId = editViewModel.Id;
+
+                    return RedirectPermanent($"/ApiScopes{httpParams.QueryStringFromProperties}");
+                }
+                TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW);
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+        }
+        //[HttpGet]
+        //public async Task<IActionResult> Edit(string id, string returnUrl = null)
+        //{
+
+        //    if (string.IsNullOrWhiteSpace(id))
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    TempData.SetValue(KeyWord.KEY_TEMPDATA_RETURN_URL, returnUrl);
+        //    TempData.SetValue(KeyWord.KEY_TEMPDATA_ORIGINAL_ID, id);
+
+        //    ApplicationUser user = await _userManager.FindByIdAsync(id);
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(
+        //        new UserEditViewModel()
+        //        {
+        //            Id=user.Id.ToString(),
+        //            EMail = user.Email,
+        //            EmailConfirmed = user.EmailConfirmed
+        //        }
+        //        );
+        //}
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(UserEditViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var returnUrl = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_RETURN_URL);
+        //        var tmpId = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ORIGINAL_ID);
+
+        //        model.OriginalId = tmpId;
+
+        //        var task = _usersBroker.Update(model);
+
+        //        if (task.Result.Succeeded)
+        //        {
+        //            if (!string.IsNullOrWhiteSpace(returnUrl))
+        //                return RedirectPermanent(returnUrl);
+        //            else return await Index();
+        //        }
+        //        else
+        //        {
+        //            foreach (var error in task.Result.Errors)
+        //            {
+        //                ModelState.AddModelError(string.Empty, error.Description);
+        //            }
+
+        //            TempData.SetValue(KeyWord.KEY_TEMPDATA_RETURN_URL, returnUrl);
+        //            TempData.SetValue(KeyWord.KEY_TEMPDATA_ORIGINAL_ID, tmpId);
+        //        }              
+        //    }
+        //    return View(model);
+        //}
 
         public async Task<IActionResult> Delete(string id)
         {

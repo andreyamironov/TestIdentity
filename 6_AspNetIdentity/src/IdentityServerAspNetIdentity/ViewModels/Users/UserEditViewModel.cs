@@ -8,7 +8,7 @@ using IdentityServerAspNetIdentity.Core;
 
 namespace IdentityServerAspNetIdentity.ViewModels
 {
-    public class UserEditViewModel
+    public class UserEditViewModel:ViewModelBase
     {
         [HiddenInput]
         public string Id { get; set; }
