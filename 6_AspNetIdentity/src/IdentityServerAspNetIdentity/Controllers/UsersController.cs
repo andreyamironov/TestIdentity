@@ -144,13 +144,13 @@ namespace IdentityServerAspNetIdentity.Controllers
         }
 
         [HttpGet]
-        public IActionResult EditStart(int id, string returnUrl = null)
+        public IActionResult EditStart(string id, string returnUrl = null)
         {
             TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW);
             return RedirectToAction("Edit", new { id = id, returnUrl = returnUrl });
         }
         [HttpGet]
-        public async Task<IActionResult> Edit(int id, string returnUrl = null)
+        public async Task<IActionResult> Edit(string id, string returnUrl = null)
         {
             if (string.IsNullOrWhiteSpace(TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW))) return RedirectToAction("Index");
 
@@ -173,13 +173,13 @@ namespace IdentityServerAspNetIdentity.Controllers
                 if (ModelState.IsValid)
                 {
                     var tmpId = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ORIGINAL_ID);
-                    model.Id = tmpId;
+                    model.OriginalId = tmpId = model.Id = tmpId;
 
                     HttpParams httpParams = IdentityServerAspNetIdentity.Core.HttpParams.Get(model.ReturnUrl_VmProperty);
                     var editViewModel = await _mediator.Send(new EditUserPostCommand(model));
                     httpParams.SelectedId = editViewModel.Id;
 
-                    return RedirectPermanent($"/ApiScopes{httpParams.QueryStringFromProperties}");
+                    return RedirectPermanent($"/Users{httpParams.QueryStringFromProperties}");
                 }
                 TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW);
                 return View(model);

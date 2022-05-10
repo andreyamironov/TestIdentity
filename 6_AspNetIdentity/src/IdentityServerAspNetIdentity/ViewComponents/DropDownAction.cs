@@ -33,6 +33,11 @@ namespace IdentityServerAspNetIdentity.ViewComponents
                 items.Add(new DropDownActionItemModel() { Controller = "clientscopes", Action = "Index", Header = "Scopes", RouteData = allRoute });
                 items.Add(new DropDownActionItemModel() { Controller = "clientgranttypes", Action = "Index", Header = "Grant Types", RouteData = allRoute });
             }
+            else if (string.Compare(controller, "users", true) == 0)
+            {
+                items.Add(new DropDownActionItemModel() { Controller = "claims", Action = "Index", Header = "Claims View", RouteData = allRoute });
+                items.Add(new DropDownActionItemModel() { Controller = "claims", Action = "Create", Header = "Add Claim", RouteData = allRoute });
+            }
 
             model.Items = items;
 

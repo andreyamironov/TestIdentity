@@ -48,36 +48,11 @@
             {
                 <tr>
                     <td>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"></button>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item" type="button" asp-action="Details" asp-route-id="@item?.Id" asp-route-returnUrl="@Model.QueryString">
-                                        View
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" type="button" asp-action="Edit" asp-route-id="@item?.Id" asp-route-returnurl="@Model.QueryString">
-                                        Edit
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" type="button" asp-action="Delete" asp-route-id="@item?.Id" asp-route-returnUrl="@Model.QueryString">
-                                        Delete
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" type="button" asp-controller="Claims" asp-action="Index" asp-route-id="@item?.Id">
-                                        Claims View
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" type="button" asp-controller="Claims" asp-action="Create" asp-route-id="@item?.Id" asp-route-returnurl="@Model.QueryString">
-                                        Add Claim
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                       
+                    </td>
+                    <td>
+                        @await Component.InvokeAsync(nameof(IdentityServerAspNetIdentity.ViewComponents.DropDownAction)
+                      , new { controller = Model.ControllerName, routedata = new { id = item.Id }, returnurl = Model.QueryString })
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Id)

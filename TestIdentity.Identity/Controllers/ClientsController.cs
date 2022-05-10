@@ -1,6 +1,4 @@
 ﻿using AMir.Wrapper;
-using IdentityServer4.EntityFramework.Mappers;
-using IdentityServer4.Models;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;

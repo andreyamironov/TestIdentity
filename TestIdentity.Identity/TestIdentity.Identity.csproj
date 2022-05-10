@@ -6,9 +6,88 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Commands\ClientScopes\**" />
+    <Compile Remove="Commands\Clients\**" />
+    <Compile Remove="Queries\ClientGrantTypes\**" />
+    <Compile Remove="Queries\ClientScopes\**" />
+    <Compile Remove="Queries\Clients\**" />
+    <Compile Remove="Repository\ClientGrantTypes\**" />
+    <Compile Remove="Repository\ClientScopes\**" />
+    <Compile Remove="Repository\Clients\**" />
+    <Compile Remove="ViewModels\ClientGrantTypes\**" />
+    <Compile Remove="ViewModels\ClientScopes\**" />
+    <Compile Remove="ViewModels\Clients\**" />
+    <Compile Remove="ViewModels\UserClaims\**" />
+    <Compile Remove="Views\Claims\**" />
+    <Compile Remove="Views\ClientGrantTypes\**" />
+    <Compile Remove="Views\ClientScopes\**" />
+    <Compile Remove="Views\Clients\**" />
+    <Content Remove="Commands\ClientScopes\**" />
+    <Content Remove="Commands\Clients\**" />
+    <Content Remove="Queries\ClientGrantTypes\**" />
+    <Content Remove="Queries\ClientScopes\**" />
+    <Content Remove="Queries\Clients\**" />
+    <Content Remove="Repository\ClientGrantTypes\**" />
+    <Content Remove="Repository\ClientScopes\**" />
+    <Content Remove="Repository\Clients\**" />
+    <Content Remove="ViewModels\ClientGrantTypes\**" />
+    <Content Remove="ViewModels\ClientScopes\**" />
+    <Content Remove="ViewModels\Clients\**" />
+    <Content Remove="ViewModels\UserClaims\**" />
+    <Content Remove="Views\Claims\**" />
+    <Content Remove="Views\ClientGrantTypes\**" />
+    <Content Remove="Views\ClientScopes\**" />
+    <Content Remove="Views\Clients\**" />
+    <EmbeddedResource Remove="Commands\ClientScopes\**" />
+    <EmbeddedResource Remove="Commands\Clients\**" />
+    <EmbeddedResource Remove="Queries\ClientGrantTypes\**" />
+    <EmbeddedResource Remove="Queries\ClientScopes\**" />
+    <EmbeddedResource Remove="Queries\Clients\**" />
+    <EmbeddedResource Remove="Repository\ClientGrantTypes\**" />
+    <EmbeddedResource Remove="Repository\ClientScopes\**" />
+    <EmbeddedResource Remove="Repository\Clients\**" />
+    <EmbeddedResource Remove="ViewModels\ClientGrantTypes\**" />
+    <EmbeddedResource Remove="ViewModels\ClientScopes\**" />
+    <EmbeddedResource Remove="ViewModels\Clients\**" />
+    <EmbeddedResource Remove="ViewModels\UserClaims\**" />
+    <EmbeddedResource Remove="Views\Claims\**" />
+    <EmbeddedResource Remove="Views\ClientGrantTypes\**" />
+    <EmbeddedResource Remove="Views\ClientScopes\**" />
+    <EmbeddedResource Remove="Views\Clients\**" />
+    <None Remove="Commands\ClientScopes\**" />
+    <None Remove="Commands\Clients\**" />
+    <None Remove="Queries\ClientGrantTypes\**" />
+    <None Remove="Queries\ClientScopes\**" />
+    <None Remove="Queries\Clients\**" />
+    <None Remove="Repository\ClientGrantTypes\**" />
+    <None Remove="Repository\ClientScopes\**" />
+    <None Remove="Repository\Clients\**" />
+    <None Remove="ViewModels\ClientGrantTypes\**" />
+    <None Remove="ViewModels\ClientScopes\**" />
+    <None Remove="ViewModels\Clients\**" />
+    <None Remove="ViewModels\UserClaims\**" />
+    <None Remove="Views\Claims\**" />
+    <None Remove="Views\ClientGrantTypes\**" />
+    <None Remove="Views\ClientScopes\**" />
+    <None Remove="Views\Clients\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\ClaimsController.cs" />
+    <Compile Remove="Controllers\ClientGrantTypesController.cs" />
+    <Compile Remove="Controllers\ClientsController.cs" />
+    <Compile Remove="Controllers\ClientScopesController.cs" />
+    <Compile Remove="Infrastructure\ClientsBroker.cs" />
+    <Compile Remove="Infrastructure\LogEventsBroker.cs" />
+    <Compile Remove="Infrastructure\UserClaimsBroker.cs" />
+    <Compile Remove="Mapping\ClientMapperConfiguration.cs" />
+    <Compile Remove="Mapping\ClientScopeMapperConfiguration.cs" />
+    <Compile Remove="Repository\IdentityServerClientsRepository.cs" />
+    <Compile Remove="Repository\IdentityServerRepositoryBase.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
-    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="4.1.2" />
-    <PackageReference Include="IdentityServer4.EntityFramework" Version="4.1.2" />
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.10" />
@@ -31,6 +110,11 @@
     <ProjectReference Include="..\AMir.Exception\AMir.Exception.csproj" />
     <ProjectReference Include="..\AMir.Interface\AMir.Interface.csproj" />
     <ProjectReference Include="..\AMir.Wrapper\AMir.Wrapper.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Commands\" />
+    <Folder Include="Data\Migrations\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

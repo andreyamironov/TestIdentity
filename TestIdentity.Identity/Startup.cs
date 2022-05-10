@@ -1,6 +1,4 @@
 using AutoMapper;
-using IdentityServer4.EntityFramework.DbContexts;
-using IdentityServer4.EntityFramework.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -63,27 +61,27 @@ namespace TestIdentity.Identity
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddIdentityServer(options =>
-                {
-                    options.Events.RaiseErrorEvents = true;
-                    options.Events.RaiseInformationEvents = true;
-                    options.Events.RaiseFailureEvents = true;
-                    options.Events.RaiseSuccessEvents = true;
+            //services.AddIdentityServer(options =>
+            //    {
+            //        options.Events.RaiseErrorEvents = true;
+            //        options.Events.RaiseInformationEvents = true;
+            //        options.Events.RaiseFailureEvents = true;
+            //        options.Events.RaiseSuccessEvents = true;
 
-                    // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
-                    options.EmitStaticAudienceClaim = true;
-                })
-                .AddConfigurationStore(options =>
-                {
-                    options.ConfigureDbContext = b => b.UseSqlServer(connectionString,
-                        sql => sql.MigrationsAssembly(migrationsAssemblyIdentityServer));
-                })
-                .AddOperationalStore(options =>
-                {
-                    options.ConfigureDbContext = b => b.UseSqlServer(connectionString,
-                        sql => sql.MigrationsAssembly(migrationsAssemblyIdentityServer));
-                })
-                .AddAspNetIdentity<ApplicationUser>();
+            //        // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
+            //        options.EmitStaticAudienceClaim = true;
+            //    })
+                //.AddConfigurationStore(options =>
+                //{
+                //    options.ConfigureDbContext = b => b.UseSqlServer(connectionString,
+                //        sql => sql.MigrationsAssembly(migrationsAssemblyIdentityServer));
+                //})
+                //.AddOperationalStore(options =>
+                //{
+                //    options.ConfigureDbContext = b => b.UseSqlServer(connectionString,
+                //        sql => sql.MigrationsAssembly(migrationsAssemblyIdentityServer));
+                //})
+                //.AddAspNetIdentity<ApplicationUser>();
            
           
             services.AddAuthentication(options =>
@@ -119,14 +117,14 @@ namespace TestIdentity.Identity
             services.AddSession();
             services.AddControllersWithViews();
             services.AddTransient(typeof(UsersBroker));
-            services.AddTransient(typeof(UserClaimsBroker));
-            services.AddTransient(typeof(IReaderRepository<Client,int>),typeof(Repository.Clients.ClientsReaderRepository));
-            services.AddTransient(typeof(IReaderByOwnerRepository<int,ClientScope, int>), typeof(Repository.ClientScopes.ClientScopesReaderRepository));
-            services.AddTransient(typeof(IReaderByOwnerRepository<int, ClientGrantType, int>), typeof(Repository.ClientGrantTypes.ClientGrantTypesReaderRepository));
+            //services.AddTransient(typeof(UserClaimsBroker));
+            //services.AddTransient(typeof(IReaderRepository<Client,int>),typeof(Repository.Clients.ClientsReaderRepository));
+            //services.AddTransient(typeof(IReaderByOwnerRepository<int,ClientScope, int>), typeof(Repository.ClientScopes.ClientScopesReaderRepository));
+            //services.AddTransient(typeof(IReaderByOwnerRepository<int, ClientGrantType, int>), typeof(Repository.ClientGrantTypes.ClientGrantTypesReaderRepository));
 
 
-            services.AddTransient(typeof(IWriterRepository<Client>), typeof(Repository.Clients.ClientsWriterRepository));
-            services.AddTransient(typeof(IWriterRepository<ClientScope>), typeof(Repository.ClientScopes.ClientScopesWriterRepository));
+            //services.AddTransient(typeof(IWriterRepository<Client>), typeof(Repository.Clients.ClientsWriterRepository));
+            //services.AddTransient(typeof(IWriterRepository<ClientScope>), typeof(Repository.ClientScopes.ClientScopesWriterRepository));
 
 
             services.AddTransient(typeof(IReaderRepository<LogEvent, int>), typeof(LogEventsReaderRepository));
@@ -209,7 +207,7 @@ namespace TestIdentity.Identity
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseIdentityServer();
+            //app.UseIdentityServer();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();
@@ -226,11 +224,11 @@ namespace TestIdentity.Identity
         {
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
-                serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+                //serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
 
-                var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
-                context.Database.Migrate();
-                ;
+                //var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+                //context.Database.Migrate();
+                //;
                 //if (!context.Clients.Any())
                 //{
                 //    //foreach (var client in Config.Clients)

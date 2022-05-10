@@ -13,12 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AMir.Interface", "AMir.Inte
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestIdentity.Tests", "TestIdentity.Tests\TestIdentity.Tests.csproj", "{DF033853-70D8-4D0A-BB40-4FED65D3C662}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServerAspNetIdentity", "6_AspNetIdentity\src\IdentityServerAspNetIdentity\IdentityServerAspNetIdentity.csproj", "{45574929-00E2-40E4-915C-AC8680B81BDB}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcClient", "6_AspNetIdentity\src\MvcClient\MvcClient.csproj", "{806C1C5C-6EAF-4CD8-9E13-62C440866673}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "6_AspNetIdentity\src\Api\Api.csproj", "{AC9BB443-5C27-4414-A49C-13117574A87F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,18 +39,6 @@ Global
 		{DF033853-70D8-4D0A-BB40-4FED65D3C662}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF033853-70D8-4D0A-BB40-4FED65D3C662}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF033853-70D8-4D0A-BB40-4FED65D3C662}.Release|Any CPU.Build.0 = Release|Any CPU
-		{45574929-00E2-40E4-915C-AC8680B81BDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{45574929-00E2-40E4-915C-AC8680B81BDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{45574929-00E2-40E4-915C-AC8680B81BDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{45574929-00E2-40E4-915C-AC8680B81BDB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{806C1C5C-6EAF-4CD8-9E13-62C440866673}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{806C1C5C-6EAF-4CD8-9E13-62C440866673}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{806C1C5C-6EAF-4CD8-9E13-62C440866673}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{806C1C5C-6EAF-4CD8-9E13-62C440866673}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AC9BB443-5C27-4414-A49C-13117574A87F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AC9BB443-5C27-4414-A49C-13117574A87F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AC9BB443-5C27-4414-A49C-13117574A87F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AC9BB443-5C27-4414-A49C-13117574A87F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
