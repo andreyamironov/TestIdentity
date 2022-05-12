@@ -14,46 +14,48 @@ using TestIdentity.Identity.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using TestIdentity.Identity.Core;
 using TestIdentity.Identity.Models;
+using MediatR;
+using TestIdentity.Identity.Queries.Users;
 
 namespace TestIdentity.Identity.Controllers
 {
 
-   [Authorize(Roles = "Administrator")]
-    public class UsersController : AppBaseController
+    [Authorize(Roles = "Administrator")]
+    public class UsersController_ : AppBaseController
     {
         private readonly ApplicationDbContext _applicationDbContext;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly UsersBroker _usersBroker;
-        public UsersController(
+        public UsersController_(
             IWebHostEnvironment webHostEnvironment
-            ,ApplicationDbContext applicationDbContext 
-            ,UserManager<ApplicationUser> userManager
-            ,UsersBroker usersBroker
-            ,IDiagnosticContext diagnosticContext):base(webHostEnvironment,diagnosticContext)
+            , ApplicationDbContext applicationDbContext
+            , UserManager<ApplicationUser> userManager
+            , UsersBroker usersBroker
+            , IDiagnosticContext diagnosticContext) : base(webHostEnvironment, diagnosticContext)
         {
-            _applicationDbContext   = applicationDbContext;
-            _userManager            = userManager;
-            _usersBroker            = usersBroker;
+            _applicationDbContext = applicationDbContext;
+            _userManager = userManager;
+            _usersBroker = usersBroker;
         }
 
         public IActionResult Index(string search = null)
         {
-            var tmpId = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ORIGINAL_ID,true);
+            var tmpId = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ORIGINAL_ID, true);
             var tempDataReturnUrl = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_RETURN_URL);
 
             TestIdentity.Identity.Core.HttpParams httpParams;
-            if (!string.IsNullOrWhiteSpace(tempDataReturnUrl)) 
-                httpParams = TestIdentity.Identity.Core.HttpParams.Get(tempDataReturnUrl); 
-            else 
+            if (!string.IsNullOrWhiteSpace(tempDataReturnUrl))
+                httpParams = TestIdentity.Identity.Core.HttpParams.Get(tempDataReturnUrl);
+            else
                 httpParams = TestIdentity.Identity.Core.HttpParams.Get(HttpContext);
 
-            var model = _usersBroker.Get(httpParams,tmpId);
+            var model = _usersBroker.Get(httpParams, tmpId);
             //_diagnosticContext.Set("Users_GET", User.Identity.Name);
             return View(model);
         }
 
         [HttpGet]
-        public ActionResult Details(string id,string returnUrl = null)
+        public ActionResult Details(string id, string returnUrl = null)
         {
             TempData.SetValue(KeyWord.KEY_TEMPDATA_RETURN_URL, returnUrl);
             var model = _userManager.FindByIdAsync(id);
@@ -73,30 +75,30 @@ namespace TestIdentity.Identity.Controllers
         {
             try
             {
-                if (string.Compare(model.Password, model.ConfirmPassword) != 0) throw new  AMir.Exception.PasswordConfirmException();
+                if (string.Compare(model.Password, model.ConfirmPassword) != 0) throw new AMir.Exception.PasswordConfirmException();
                 if (ModelState.IsValid)
                 {
                     var user = new ApplicationUser()
                     {
-                        UserName    = model.EMail,
-                        Email       = model.EMail,
+                        UserName = model.EMail,
+                        Email = model.EMail,
                         EmailConfirmed = true
                     };
 
                     var result = await _userManager.CreateAsync(user, model.Password);
                     if (result.Succeeded == true)
                     {
-                        TempData.SetValue(KeyWord.KEY_TEMPDATA_ORIGINAL_ID,user.Id);
+                        TempData.SetValue(KeyWord.KEY_TEMPDATA_ORIGINAL_ID, user.Id);
                         return RedirectToAction(nameof(Index));
                     }
 
                     StringBuilder sb = new StringBuilder();
-                    foreach(var er in result.Errors)
+                    foreach (var er in result.Errors)
                     {
                         sb.AppendLine(er.Description);
                     }
 
-                    ViewBag.ERR  = sb.ToString();
+                    ViewBag.ERR = sb.ToString();
                 }
                 return View(model);
             }
@@ -105,7 +107,7 @@ namespace TestIdentity.Identity.Controllers
                 throw new Exception(ex.ToString());
             }
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> Edit(string id, string returnUrl = null)
         {
@@ -126,7 +128,7 @@ namespace TestIdentity.Identity.Controllers
             return View(
                 new UserEditViewModel()
                 {
-                    Id=user.Id.ToString(),
+                    Id = user.Id.ToString(),
                     EMail = user.Email,
                     EmailConfirmed = user.EmailConfirmed
                 }
@@ -161,7 +163,7 @@ namespace TestIdentity.Identity.Controllers
 
                     TempData.SetValue(KeyWord.KEY_TEMPDATA_RETURN_URL, returnUrl);
                     TempData.SetValue(KeyWord.KEY_TEMPDATA_ORIGINAL_ID, tmpId);
-                }              
+                }
             }
             return View(model);
         }
@@ -179,7 +181,7 @@ namespace TestIdentity.Identity.Controllers
             {
                 return NotFound();
             }
-            return View(user);         
+            return View(user);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -219,8 +221,34 @@ namespace TestIdentity.Identity.Controllers
             else
             {
                 TempData.SetValue(KeyWord.KEY_TEMPDATA_INFO, "Должен оставаться хотя бы один администратор системы");
-            }         
+            }
             return RedirectToAction(nameof(Index));
         }
-    }   
+    }
+
+    public class UsersController : AppBaseController
+    {
+        IMediator _mediator;
+
+
+        public UsersController(IWebHostEnvironment webHostEnvironment, IDiagnosticContext diagnosticContext, IMediator mediator) : base(webHostEnvironment, diagnosticContext)
+        {
+            _mediator = mediator;
+        }
+
+        public async Task<IActionResult> Index(string search = null)
+        {
+            var tempDataReturnUrl = TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_RETURN_URL);
+
+            TestIdentity.Identity.Core.HttpParams httpParams;
+            if (!string.IsNullOrWhiteSpace(tempDataReturnUrl))
+                httpParams = TestIdentity.Identity.Core.HttpParams.Get(tempDataReturnUrl);
+            else
+                httpParams = TestIdentity.Identity.Core.HttpParams.Get(HttpContext.Request.QueryString.Value);
+
+            var model = await _mediator.Send(new GetUsersPagerListQuery(httpParams));
+
+            return View(model);
+        }
+    }
 }

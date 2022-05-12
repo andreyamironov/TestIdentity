@@ -116,7 +116,8 @@ namespace TestIdentity.Identity
 
             services.AddSession();
             services.AddControllersWithViews();
-            services.AddTransient(typeof(UsersBroker));
+
+            //services.AddTransient(typeof(UsersBroker));
             //services.AddTransient(typeof(UserClaimsBroker));
             //services.AddTransient(typeof(IReaderRepository<Client,int>),typeof(Repository.Clients.ClientsReaderRepository));
             //services.AddTransient(typeof(IReaderByOwnerRepository<int,ClientScope, int>), typeof(Repository.ClientScopes.ClientScopesReaderRepository));
@@ -126,9 +127,8 @@ namespace TestIdentity.Identity
             //services.AddTransient(typeof(IWriterRepository<Client>), typeof(Repository.Clients.ClientsWriterRepository));
             //services.AddTransient(typeof(IWriterRepository<ClientScope>), typeof(Repository.ClientScopes.ClientScopesWriterRepository));
 
-
+            services.AddTransient(typeof(IReaderRepository<ApplicationUser, Guid>), typeof(UsersReaderRepository));
             services.AddTransient(typeof(IReaderRepository<LogEvent, int>), typeof(LogEventsReaderRepository));
-
 
             //services.AddTransient(typeof(IdentityServerClientsRepository));
 
