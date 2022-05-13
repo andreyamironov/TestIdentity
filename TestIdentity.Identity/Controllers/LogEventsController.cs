@@ -36,13 +36,6 @@ namespace TestIdentity.Identity.Controllers
             var model = await _mediator.Send(new GetLogEventsPagerListQuery(httpParams));
 
             return View(model);
-
-
-
-            //TestIdentity.Identity.Core.HttpParams httpParams;
-            //httpParams = TestIdentity.Identity.Core.HttpParams.Get(HttpContext);
-            //var model = _logEventsBroker.Get(httpParams);
-            //return View(model);
         }
     }
 }
