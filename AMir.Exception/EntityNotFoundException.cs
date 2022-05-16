@@ -6,6 +6,6 @@ namespace AMir.Exception
 {
     public class EntityNotFoundException : System.Exception
     {
-        public override string Message => "АМ Exception: Сущьность не найдена";
+        public override string Message => "АМ Exception: Сущность не найдена";
     }
 }

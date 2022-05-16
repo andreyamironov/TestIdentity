@@ -13,12 +13,12 @@ using TestIdentity.Identity.ViewModels;
 
 namespace TestIdentity.Identity.Handlers.Users
 {
-    public class GetUsersPagerListHandler : IRequestHandler<GetUsersPagerListQuery, PagerListModel<ApplicationUser>>
+    public class UsersPagerListGetHandler : IRequestHandler<GetUsersPagerListQuery, PagerListModel<ApplicationUser>>
     {
         IReaderRepository<ApplicationUser, Guid> _reader;
         IMapper _mapper;
 
-        public GetUsersPagerListHandler(IReaderRepository<ApplicationUser, Guid> reader, IMapper mapper)
+        public UsersPagerListGetHandler(IReaderRepository<ApplicationUser, Guid> reader, IMapper mapper)
         {
             _reader = reader;
             _mapper = mapper;

@@ -13,12 +13,12 @@ using TestIdentity.Identity.ViewModels;
 
 namespace TestIdentity.Identity.Handlers.LogEvents
 {
-    public class GetLogEventsPagerListHandler : IRequestHandler<GetLogEventsPagerListQuery, PagerListModel<LogEventViewModel>>
+    public class LogEventsPagerListGetHandler : IRequestHandler<GetLogEventsPagerListQuery, PagerListModel<LogEventViewModel>>
     {
         IReaderRepository<LogEvent, int> _reader;
         IMapper _mapper;
 
-        public GetLogEventsPagerListHandler(IReaderRepository<LogEvent, int> reader, IMapper mapper)
+        public LogEventsPagerListGetHandler(IReaderRepository<LogEvent, int> reader, IMapper mapper)
         {
             _reader = reader;
             _mapper = mapper;
@@ -39,8 +39,6 @@ namespace TestIdentity.Identity.Handlers.LogEvents
             PagerListModel<LogEventViewModel> pagerListModel = new LogEventsViewModel(httpParams, total, mapModels);
 
             return Task.FromResult(pagerListModel);
-
-            throw new NotImplementedException();
         }
     }
 }

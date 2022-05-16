@@ -16,6 +16,7 @@ using TestIdentity.Identity.Core;
 using TestIdentity.Identity.Models;
 using MediatR;
 using TestIdentity.Identity.Queries.Users;
+using TestIdentity.Identity.Commands.Users;
 
 namespace TestIdentity.Identity.Controllers
 {
@@ -249,6 +250,47 @@ namespace TestIdentity.Identity.Controllers
             var model = await _mediator.Send(new GetUsersPagerListQuery(httpParams));
 
             return View(model);
+        }
+
+        
+
+        [HttpGet]
+        public async Task<IActionResult> Create(string returnUrl = null)
+        {
+            if (string.IsNullOrWhiteSpace(TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ACTION_GET_ALLOW))) return RedirectToAction("Index");
+            TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW);
+            var model = await _mediator.Send(new CreateUserGetQuery(new UserCreateViewModel()));
+            model.ReturnUrl_VmProperty = returnUrl;
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateAsync([FromForm()] UserCreateViewModel model)
+        {
+            if (string.IsNullOrWhiteSpace(TempData.GetStringOrEmpty(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW))) return RedirectToAction("Index");
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    HttpParams httpParams = TestIdentity.Identity.Core.HttpParams.Get(model.ReturnUrl_VmProperty);
+                    var postModel = await _mediator.Send(new CreateUserPostCommand(model));
+                    httpParams.SelectedId = postModel.Id;
+
+                    TempData.SetValue(KeyWord.KEY_TEMPDATA_INFO, $"User '{model.EMail}' has been CREATED");
+
+                    return RedirectPermanent($"/{Root}{httpParams.QueryStringFromProperties}");
+                }
+                var getModel = await _mediator.Send(new CreateUserGetQuery(model));
+                TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW);
+                return View(getModel);
+            }
+            catch (Exception ex)
+            {
+                TempData.SetValue(KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW, KeyWord.KEY_TEMPDATA_ACTION_POST_ALLOW);
+                ViewBag.ERR = ex.ToString();
+                return View(model);
+            }
         }
     }
 }
