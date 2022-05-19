@@ -28,12 +28,15 @@ namespace TestIdentity.Identity.Handlers.LogEvents
         {
             HttpParams httpParams = request.HttpParams;
 
-            Func<LogEvent, bool> predicate = (c) =>
+
+            Func<LogEvent, object> orderByKeySelector = (c) => c.Id;
+
+            Func<LogEvent, bool> whereKeySelector = (c) =>
             (string.IsNullOrWhiteSpace(request.HttpParams.Search) ? true : c.Message.Contains(request.HttpParams.Search));
 
             HttpParams.CalculateSkipTake(httpParams, out int skip, out int take,0);
 
-            var dbEntities = _reader.GetList(predicate, skip, take, out int total);
+            var dbEntities = _reader.GetList(orderByKeySelector,whereKeySelector, skip, take, out int total,"desc");
             var mapModels = _mapper.Map<IEnumerable<LogEvent>, IEnumerable<LogEventViewModel>>(dbEntities);
 
             PagerListModel<LogEventViewModel> pagerListModel = new LogEventsViewModel(httpParams, total, mapModels);

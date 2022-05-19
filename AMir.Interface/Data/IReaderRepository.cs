@@ -8,7 +8,7 @@ namespace AMir.Interface.Data
         where TEntity : class
         where TEntityKey : IEquatable<TEntityKey>
     {
-        IEnumerable<TEntity> GetList(Func<TEntity, bool> predicate, int skip, int take, out int total);
+        IEnumerable<TEntity> GetList(Func<TEntity, object> orderByKeySelector, Func<TEntity, bool> whereKeySelector, int skip, int take, out int total,string orderByAscDesc="asc");
         TEntity Get(Func<TEntity, bool> predicate);
         int IndexOf(Func<TEntity, bool> predicate, TEntity entity);
     }

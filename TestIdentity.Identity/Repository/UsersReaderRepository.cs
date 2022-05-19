@@ -22,9 +22,9 @@ namespace TestIdentity.Identity.Repository
             throw new NotImplementedException();
         }
 
-        public IEnumerable<ApplicationUser> GetList(Func<ApplicationUser, bool> predicate, int skip, int take, out int total)
+        public IEnumerable<ApplicationUser> GetList(Func<ApplicationUser, object> orderByKeySelector, Func<ApplicationUser, bool> whereKeySelector, int skip, int take, out int total, string orderByAscDesc = "asc")
         {
-            return _userManager.Users.SkipTakeFuncPredicate(predicate, skip, take, out total);
+            return _userManager.Users.SkipTakeFuncPredicate(orderByKeySelector,whereKeySelector, skip, take, out total, orderByAscDesc);
         }
 
         public int IndexOf(Func<ApplicationUser, bool> predicate, ApplicationUser entity)

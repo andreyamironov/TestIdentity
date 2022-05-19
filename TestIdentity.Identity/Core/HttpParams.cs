@@ -54,6 +54,7 @@ namespace TestIdentity.Identity.Core
         public int Total { get; set; }
 
 
+
         public static HttpParams Get(HttpContext httpContext)
         {
             HttpParams httpParams = new HttpParams();

@@ -33,7 +33,7 @@ namespace TestIdentity.Identity.Handlers.Users
 
             HttpParams.CalculateSkipTake(httpParams, out int skip, out int take, 0);
 
-            var dbEntities = _reader.GetList(predicate, skip, take, out int total);
+            var dbEntities = _reader.GetList(null,predicate, skip, take, out int total);
             //var mapModels = _mapper.Map<IEnumerable<LogEvent>, IEnumerable<LogEventViewModel>>(dbEntities);
 
             PagerListModel<ApplicationUser> pagerListModel = new UsersViewModel(httpParams, total, dbEntities);

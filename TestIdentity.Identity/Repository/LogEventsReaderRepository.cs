@@ -23,9 +23,9 @@ namespace TestIdentity.Identity.Repository
             throw new NotImplementedException();
         }
 
-        public IEnumerable<LogEvent> GetList(Func<LogEvent, bool> predicate, int skip, int take, out int total)
+        public IEnumerable<LogEvent> GetList(Func<LogEvent, object> orderByKeySelector, Func<LogEvent, bool> whereKeySelector, int skip, int take, out int total, string orderByAscDesc)
         {
-            return _applicationEventDbContext.Events.OrderByDescending(i=>i.Id).SkipTakeFuncPredicate(predicate, skip, take, out total);
+            return _applicationEventDbContext.Events.SkipTakeFuncPredicate(orderByKeySelector,whereKeySelector, skip, take, out total, orderByAscDesc);
         }
 
         public int IndexOf(Func<LogEvent, bool> predicate, LogEvent entity)
