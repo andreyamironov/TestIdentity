@@ -17,6 +17,8 @@ namespace TestIdentity.Identity.ViewModels
         public int TotalCount { get; set; }
         public string Search { get; set; }
         public string Tag { get; set; }
+        public string OrderBy { get; set; }
+
 
         string queryString;
         public string QueryString
@@ -45,6 +47,8 @@ namespace TestIdentity.Identity.ViewModels
             Page            =(int) httpParams.Page;
             ItemsPerPage    = (int)httpParams.Count;
             Search          = httpParams.Search;
+            Tag             = httpParams.Tag;
+            OrderBy         = httpParams.OrderBy;
             QueryString     = httpParams.QueryString;
 
             Items = items;

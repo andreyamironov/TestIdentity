@@ -12,10 +12,15 @@ namespace TestIdentity.Identity.Core
         const int DEFAULT_TAKE = 100;
         
         public int Page { get;  set; }
-        public int Count { get;  set; }
+        public int Count { get;  set; }        
+        public int Total { get; set; }
+
         public string Search { get;  set; }
         public string Tag { get;  set; }        
         public dynamic SelectedId { get; set; }
+
+        public string OrderBy { get; set; }
+
 
         public string QueryStringFromProperties
         {
@@ -43,15 +48,19 @@ namespace TestIdentity.Identity.Core
                     sb.Append($"{KeyWord.SelectedId}={SelectedId}");
                 }
 
+                if (OrderBy != null)
+                {
+                    if (sb.Length > 0) sb.Append('&');
+                    sb.Append($"{KeyWord.OrderBy}={OrderBy}");
+                }
+
                 if (sb.Length > 0) sb.Insert(0,'?');
 
                 return sb.ToString();
             }
         }
-
         public string QueryString { get; set; }
 
-        public int Total { get; set; }
 
 
 
@@ -72,6 +81,8 @@ namespace TestIdentity.Identity.Core
             httpParams.Tag = httpContext.Request.Query[KeyWord.Tag];
 
             httpParams.SelectedId = httpContext.Request.Query[KeyWord.SelectedId];
+
+            httpParams.OrderBy = httpContext.Request.Query[KeyWord.OrderBy];
 
             httpParams.QueryString = $"{httpContext.Request.Path}{httpContext.Request.QueryString.Value}";
             return httpParams;
@@ -115,6 +126,10 @@ namespace TestIdentity.Identity.Core
                         else if (String.Compare(subKeys[0], KeyWord.SelectedId, StringComparison.OrdinalIgnoreCase) == 0)
                         {
                             httpParams.SelectedId = subKeys[1];
+                        }
+                        else if (String.Compare(subKeys[0], KeyWord.OrderBy, StringComparison.OrdinalIgnoreCase) == 0)
+                        {
+                            httpParams.OrderBy = subKeys[1];
                         }
                     }
                 }

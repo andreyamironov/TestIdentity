@@ -31,15 +31,63 @@
                 <th></th>
                 <th>
                     Id
+                    <a asp-controller=@Model.ControllerName
+                       asp-route-page=@Model.Page
+                       asp-route-count=@Model.ItemsPerPage
+                       asp-route-orderby="id">
+                        <img src="~/lib/bootstrap/dist/icons/arrow-up-short.svg" />
+                    </a>
+                    <a asp-controller=@Model.ControllerName
+                       asp-route-page=@Model.Page
+                       asp-route-count=@Model.ItemsPerPage
+                       asp-route-orderby="id_desc">
+                        <img src="~/lib/bootstrap/dist/icons/arrow-down-short.svg" />
+                    </a>
                 </th>
                 <th>
                     UserName
+                    <a asp-controller=@Model.ControllerName
+                       asp-route-page=@Model.Page
+                       asp-route-count=@Model.ItemsPerPage
+                       asp-route-orderby="username">
+                        <img src="~/lib/bootstrap/dist/icons/arrow-up-short.svg" />
+                    </a>
+                    <a asp-controller=@Model.ControllerName
+                       asp-route-page=@Model.Page
+                       asp-route-count=@Model.ItemsPerPage
+                       asp-route-orderby="username_desc">
+                        <img src="~/lib/bootstrap/dist/icons/arrow-down-short.svg" />
+                    </a>
                 </th>
                 <th>
                     Email
+                    <a asp-controller=@Model.ControllerName
+                       asp-route-page=@Model.Page
+                       asp-route-count=@Model.ItemsPerPage
+                       asp-route-orderby="email">
+                        <img src="~/lib/bootstrap/dist/icons/arrow-up-short.svg" />
+                    </a>
+                    <a asp-controller=@Model.ControllerName
+                       asp-route-page=@Model.Page
+                       asp-route-count=@Model.ItemsPerPage
+                       asp-route-orderby="email_desc">
+                        <img src="~/lib/bootstrap/dist/icons/arrow-down-short.svg" />
+                    </a>
                 </th>
                 <th>
                     PhoneNumber
+                    <a asp-controller=@Model.ControllerName
+                       asp-route-page=@Model.Page
+                       asp-route-count=@Model.ItemsPerPage
+                       asp-route-orderby="phonenumber">
+                        <img src="~/lib/bootstrap/dist/icons/arrow-up-short.svg" />
+                    </a>
+                    <a asp-controller=@Model.ControllerName
+                       asp-route-page=@Model.Page
+                       asp-route-count=@Model.ItemsPerPage
+                       asp-route-orderby="phonenumber_desc">
+                        <img src="~/lib/bootstrap/dist/icons/arrow-down-short.svg" />
+                    </a>
                 </th>
             </tr>
         </thead>

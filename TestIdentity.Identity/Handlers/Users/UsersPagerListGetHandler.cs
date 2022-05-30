@@ -1,4 +1,5 @@
 ﻿using AMir.Interface.Data;
+using AMir.Wrapper;
 using AutoMapper;
 using MediatR;
 using System;
@@ -28,12 +29,16 @@ namespace TestIdentity.Identity.Handlers.Users
         {
             HttpParams httpParams = request.HttpParams;
 
+            OrderByHelper orderByHelper = new OrderByHelper(httpParams.OrderBy, OrderByHelper.ASC);
+
+            Func<ApplicationUser, object> orderByKeySelector = (c) => c.GetPropertyValue(orderByHelper.PropertyName, "Id");
+
             Func<ApplicationUser, bool> predicate = (c) =>
             (string.IsNullOrWhiteSpace(request.HttpParams.Search) ? true : c.UserName.Contains(request.HttpParams.Search));
 
             HttpParams.CalculateSkipTake(httpParams, out int skip, out int take, 0);
 
-            var dbEntities = _reader.GetList(null,predicate, skip, take, out int total);
+            var dbEntities = _reader.GetList(orderByKeySelector, predicate, skip, take, out int total,orderByHelper.CurrentAscDesc);
             //var mapModels = _mapper.Map<IEnumerable<LogEvent>, IEnumerable<LogEventViewModel>>(dbEntities);
 
             PagerListModel<ApplicationUser> pagerListModel = new UsersViewModel(httpParams, total, dbEntities);

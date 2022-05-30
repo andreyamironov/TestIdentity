@@ -28,15 +28,65 @@
                 <tr>
                     <th>
                         Time
+                        <a
+                           asp-controller=@Model.ControllerName
+                           asp-route-page=@Model.Page
+                           asp-route-count=@Model.ItemsPerPage
+                           asp-route-orderby="timestamp">
+                            <img src="~/lib/bootstrap/dist/icons/arrow-up-short.svg" />
+                        </a>
+                        <a
+                           asp-controller=@Model.ControllerName
+                           asp-route-page=@Model.Page
+                           asp-route-count=@Model.ItemsPerPage
+                           asp-route-orderby="timestamp_desc">
+                            <img src="~/lib/bootstrap/dist/icons/arrow-down-short.svg" />
+                        </a>
                     </th>
                     <th>
                         Level
+                        <a asp-controller=@Model.ControllerName
+                           asp-route-page=@Model.Page
+                           asp-route-count=@Model.ItemsPerPage
+                           asp-route-orderby="level">
+                            <img src="~/lib/bootstrap/dist/icons/arrow-up-short.svg" />
+                        </a>
+                        <a asp-controller=@Model.ControllerName
+                           asp-route-page=@Model.Page
+                           asp-route-count=@Model.ItemsPerPage
+                           asp-route-orderby="level_desc">
+                            <img src="~/lib/bootstrap/dist/icons/arrow-down-short.svg" />
+                        </a>
                     </th>
                     <th>
                         Message
+                        <a asp-controller=@Model.ControllerName
+                           asp-route-page=@Model.Page
+                           asp-route-count=@Model.ItemsPerPage
+                           asp-route-orderby="message">
+                            <img src="~/lib/bootstrap/dist/icons/arrow-up-short.svg" />
+                        </a>
+                        <a asp-controller=@Model.ControllerName
+                           asp-route-page=@Model.Page
+                           asp-route-count=@Model.ItemsPerPage
+                           asp-route-orderby="message_desc">
+                            <img src="~/lib/bootstrap/dist/icons/arrow-down-short.svg" />
+                        </a>
                     </th>
-                    <th>
+                    <th width="50%">
                         Exception
+                        <a asp-controller=@Model.ControllerName
+                           asp-route-page=@Model.Page
+                           asp-route-count=@Model.ItemsPerPage
+                           asp-route-orderby="exception">
+                            <img src="~/lib/bootstrap/dist/icons/arrow-up-short.svg" />
+                        </a>
+                        <a asp-controller=@Model.ControllerName
+                           asp-route-page=@Model.Page
+                           asp-route-count=@Model.ItemsPerPage
+                           asp-route-orderby="exception_desc">
+                            <img src="~/lib/bootstrap/dist/icons/arrow-down-short.svg" />
+                        </a>
                     </th>
                 </tr>
             </thead>
@@ -75,6 +125,8 @@
             search = Model.Search
         ,
             tag = Model.Tag
+        ,
+            orderby = Model.OrderBy
         })
 
 @*</div>*@

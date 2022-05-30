@@ -14,7 +14,7 @@ namespace TestIdentity.Identity.ViewComponents
         private readonly int DefaultPage = 1;
         private readonly int DefaultItemsPerPage = 10;
 
-        public IViewComponentResult Invoke(string controller, int page, int itemsperpage, int totalCount, string search, string tag)
+        public IViewComponentResult Invoke(string controller, int page, int itemsperpage, int totalCount, string search, string tag, string orderby)
         {
             if (page < 1) page = DefaultPage;
             if (itemsperpage < 1) itemsperpage = DefaultItemsPerPage;
@@ -34,6 +34,9 @@ namespace TestIdentity.Identity.ViewComponents
             model.ItemsPerPageVariant = new int[] { 10, 50, 100 ,1000};
             model.Search        = search;
             model.Tag           = tag;
+            model.OrderBy       = orderby;
+
+
             model.PageDown      = tmpPageDown;
             model.PageUp        = tmpPageUp;
 

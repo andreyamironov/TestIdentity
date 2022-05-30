@@ -18,7 +18,9 @@
                        asp-route-page=@i
                        asp-route-count=@Model.ItemsPerPage
                        asp-route-search=@Model.Search
-                       asp-route-tag=@Model.Tag>@i</a>
+                       asp-route-tag=@Model.Tag
+                       asp-route-orderby=@Model.OrderBy
+                       >@i</a>
                 </li>
             }
             else
@@ -28,7 +30,9 @@
                        asp-route-page=@i
                        asp-route-count=@Model.ItemsPerPage
                        asp-route-search=@Model.Search
-                       asp-route-tag=@Model.Tag>@i</a>
+                       asp-route-tag=@Model.Tag
+                       asp-route-orderby=@Model.OrderBy
+                       >@i</a>
                 </li>
             }
         }
@@ -38,7 +42,9 @@
                asp-route-page=@Model.PageUp
                asp-route-count=@Model.ItemsPerPage
                asp-route-search=@Model.Search
-               asp-route-tag=@Model.Tag>>></a>
+               asp-route-tag=@Model.Tag
+               asp-route-orderby=@Model.OrderBy
+               >>></a>
         </li>
         <li class="page-item">&nbsp</li>
         @for (int i = 0; i < Model.ItemsPerPageVariant.Length; i++)
@@ -48,7 +54,9 @@
                    asp-route-page=@Model.Page
                    asp-route-count=@Model.ItemsPerPageVariant[i]
                    asp-route-search=@Model.Search
-                   asp-route-tag=@Model.Tag>@Model.ItemsPerPageVariant[i]                                    
+                   asp-route-tag=@Model.Tag
+                   asp-route-orderby=@Model.OrderBy
+                   >@Model.ItemsPerPageVariant[i]              
                 </a>
             </li>
         }

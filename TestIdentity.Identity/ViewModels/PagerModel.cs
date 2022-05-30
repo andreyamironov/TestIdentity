@@ -18,6 +18,6 @@ namespace TestIdentity.Identity.ViewModels
         public int RangeStop { get; set; }
         public string Search { get; set; }
         public string Tag { get; set; }
-
+        public string OrderBy { get; set; }
     }
 }
